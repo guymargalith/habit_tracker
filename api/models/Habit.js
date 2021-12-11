@@ -33,17 +33,17 @@ class Habit {
     }
 
     
-    // static findUserHabits(id){
-    //     return new Promise(async (res, rej) => {
-    //         try {
-    //             const result = await db.query("SELECT * FROM habits WHERE user_id = $1;", [id]);
-    //             let habits = result.rows.map(r => new Habit(r))
-    //             res(habits)
-    //         } catch (err) {
-    //             rej(`Error retrieving habits: ${err}`)
-    //         }
-    //     })
-    // }
+    static findUserHabits(id){
+        return new Promise(async (res, rej) => {
+            try {
+                const result = await db.query("SELECT * FROM habits WHERE user_id = $1;", [id]);
+                let habits = result.rows.map(r => new Habit(r))
+                res(habits)
+            } catch (err) {
+                rej(`Error retrieving habits: ${err}`)
+            }
+        })
+    }
 
     static findByID(id){
         return new Promise(async (res, rej) => {

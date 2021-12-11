@@ -1,4 +1,5 @@
 const db = require('../db_config/init');
+const Habit = require('./Habit')
 
 class User {
     constructor(data){
@@ -55,16 +56,17 @@ class User {
         })
     }
 
-    get allHabits() {
-        return new Promise(async (res, rej) => {
-            try {
-                const result = await db.query("SELECT * FROM habits WHERE user_id = $1;", [this.id]);
-                res(result)
-            } catch (err) {
-                rej(`Error retrieving habits for this user: ${err}`)
-            }
-        })
-    }
+    // get allHabits() {
+    //     return new Promise(async (res, rej) => {
+    //         try {
+    //             const result = await db.query("SELECT * FROM habits WHERE user_id = $1;", [this.id]);
+    //             let habits = result.rows.map(r => new Habit(r))
+    //             res(habits)
+    //         } catch (err) {
+    //             rej(`Error retrieving habits for this user: ${err}`)
+    //         }
+    //     })
+    // }
 }
 
 module.exports = User
