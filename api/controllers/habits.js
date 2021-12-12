@@ -19,7 +19,7 @@ router.get('/', verifyToken, async (req, res) => {
 // Route to fetch one habit using its id (no client side purpose yet)
 router.get('/:id', verifyToken, async (req, res) => {
     try{
-        const habit = await Habit.findByID(req.body.id)
+        const habit = await Habit.findByID(req.params.id)
         res.status(200).json(habit)
     } catch(err){
         res.status(404).json({err})
@@ -29,7 +29,7 @@ router.get('/:id', verifyToken, async (req, res) => {
 // Route to fetch all the habits of a specific user using the user's id
 router.get('/specific/:id', verifyToken, async (req, res) => {
     try{
-        const habits = await Habit.findUserHabits(req.body.id)
+        const habits = await Habit.findUserHabits(req.params.id)
         res.status(200).json(habits)
     } catch(err){
         res.status(404).json({err})
