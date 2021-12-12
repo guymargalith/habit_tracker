@@ -46,4 +46,14 @@ router.post('/', verifyToken, async (req, res) => {
     }
 })
 
+router.get('/:id/streak', verifyToken, async (req, res) => {
+    try{
+        const habit = await Habit.findByID(req.params.id)
+        const streak = await habit.streak
+        res.status(200).json({streak: streak})
+    } catch(err){
+        res.status(404).json({err})
+    }
+})
+
 module.exports = router

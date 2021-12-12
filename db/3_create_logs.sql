@@ -1,5 +1,5 @@
 CREATE TABLE logs (
     id serial PRIMARY KEY,
-    date TIMESTAMP NOT NULL,
+    date INT NOT NULL,
     habit_id INT REFERENCES habits(id) NOT NULL
 );
