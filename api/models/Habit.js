@@ -141,6 +141,20 @@ class Habit {
         })
         
     }
+
+    get weeklyLogs(){
+        return new Promise(async (res, rej) => {
+            try{
+                let startDate = new Date(new Date().toDateString()).getTime();
+                let startWeek = (startDate/1000) - 6.048e+5
+                const result = await db.query("SELECT * FROM logs WHERE habit_id = $1 AND date > $2 ORDER BY date DESC;", [this.id, startWeek]);
+                const logs = result.rows.map(r => new Log(r))
+                res(logs)
+            } catch(err){
+                rej(`Error getting logs: ${err}`)
+            }
+        })
+    }
 }
 
 module.exports = Habit

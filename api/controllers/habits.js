@@ -48,6 +48,7 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 // route for retrieving the current streak of a specific habit
+
 router.get("/:id/streak", verifyToken, async (req, res) => {
   try {
     const habit = await Habit.findByID(req.params.id);
@@ -66,4 +67,16 @@ router.patch("/", verifyToken, async (req, res) => {
     res.status(404).json({ err });
   }
 });
-module.exports = router;
+
+router.get('/:id/weekly', verifyToken, async (req, res) => {
+    try{
+        const habit = await Habit.findByID(req.params.id)
+        const weeklyLogs = await habit.weeklyLogs
+        res.status(200).json({logs: weeklyLogs})
+    } catch(err){
+        res.status(404).json({err})
+    }
+})
+
+module.exports = router
+
