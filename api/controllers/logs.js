@@ -15,8 +15,25 @@ router.get('/', verifyToken, async (req, res) => {
     }
 })
 
-router.delete('/:id', verifyToken, async (req, res) => {
+// route for creating a log
+router.post('/', verifyToken, async (req, res) => {
+    try {
+        const log = await Log.create(req.body)
+        res.status(201).json(log)
+    } catch(err){
+        res.status(500).json({err})
+    }
+})
 
+// route for deleting a specific log
+router.delete('/:id', verifyToken, async (req, res) => {
+    try {
+        const log = await Log.findByID(req.params.id)
+        log.destroy()
+        res.status(204)
+    } catch(err){
+        res.status(500).json({err})
+    }
 })
 
 module.exports = router
