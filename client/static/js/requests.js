@@ -1,16 +1,23 @@
-// async function getHabits(){
-//     const result = await fetch("http://localhost:3000/habits")
-//     const data = result.json();
-//     console.log(data)
-// }
+async function getHabits(){
+    const result = await fetch("http://localhost:3000/habits")
+    const data = result.json();
+    console.log(data)
+}
 
 
-// async function getUsers(){
-//     const result = await fetch("http://localhost:3000/users")
-//     const data = result.json();
-//     console.log(data)
-// }
+async function getUsers(){
+    const result = await fetch("http://localhost:3000/users")
+    const data = result.json();
+    console.log(data)
+}
 
+
+async function getHabitsByUserId(id){
+    const result = await fetch(`http://localhost:3000/habits/specific/${id}`)
+    const data = await result.json();
+    const habits = data.map(d =>d.name)
+    return habits
+}
 // async function getAllPosts(){
 //     try {
 //         const options = {
@@ -31,3 +38,4 @@
 
 // getHabits()
 // getUsers()
+

@@ -30,6 +30,7 @@ async function renderHomepage(){
 }
 
 function renderLoginForm(){
+    document.body.background = changeBackgroundImage()
     const title = document.createElement('h1')
     const secondTitle = document.createElement('h4')
     title.className = "px-5 py-3 text-center";
@@ -60,9 +61,11 @@ function renderLoginForm(){
             mainSection.appendChild(title)
             mainSection.appendChild(secondTitle)
             mainSection.appendChild(form);
+            // form.addEventListener("submit", someFunction())
 }
 
 function renderRegisterForm(){
+    document.body.background = changeBackgroundImage()
     const title = document.createElement('h1')
     const secondTitle = document.createElement('h4')
     title.className = "px-5 py-3 text-center";
@@ -95,13 +98,83 @@ function renderRegisterForm(){
             mainSection.appendChild(title)
             mainSection.appendChild(secondTitle)
             mainSection.appendChild(form);
+            // form.addEventListener("submit", someFunction())
 }
 
 
-function renderUserHabitsPage(){
+async function renderUserHabitsPage(){
+    const id = 1;
+    document.body.background = changeBackgroundImage()
     const userHabitTitle = document.createElement('h1');
+    const userSecondTitle = document.createElement('h4');
+    userHabitTitle.textContent = "Welcome to Jumanji"
+    userSecondTitle.textContent = await getMotivationalQuote();
+    mainSection.appendChild(userHabitTitle);
+    mainSection.appendChild(userSecondTitle);
+    const data = await getHabitsByUserId(id)
+    console.log(data)
+    data.forEach(habit => buildCards(habit))
 
 }
+
+
+function buildCards(habit){
+    let card = document.createElement("div");
+    card.classList = 'card'; 
+    let cardTitle = document.createElement('div')
+    cardTitle.classList = 'card-header text-center';
+    let streakTitle = document.createElement('div')
+    streakTitle.classList = 'card-title py-1';
+    cardTitle.textContent = habit;
+    let checkboxArea = document.createElement('div')
+    let dateSpace = document.createElement('div');
+    card.appendChild(cardTitle);
+    for(let i =1; i <= 7; i++){
+    let checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'; 
+    checkbox.id = i;
+    checkboxArea.appendChild(checkbox);
+    
+    if(i === 7){
+        checkbox.classList = 'big';
+    }
+    let dateCheckbox = document.createElement('p');
+    dateCheckbox.classList = 'dateTopping';
+    dateCheckbox.textContent = `${getDay(i)}`;
+    checkboxArea.appendChild(dateCheckbox);
+    }
+    checkboxArea.classList = 'd-flex card-body';
+    card.appendChild(checkboxArea);
+    mainSection.appendChild(card)
+ 
+    
+    
+}
+
+function getDay(i){
+    let day = new Date(); 
+    day.setDate(day.getDate() + i)
+    return day.toLocaleString('en-us', {  weekday: 'short' });
+}
+
+getDay()
+{/* <div class="card ">
+<div class="card-header text-center ">
+  Don't eat an egg
+</div>
+<div class="d-flex card-body">
+    <input type="checkbox" name="" class="checkbox" id="">
+  <input type="checkbox" name="" class="checkbox" id="">
+  <input type="checkbox" name="" class="checkbox" id="">
+  <input type="checkbox" name="" class="checkbox" id="">
+  <input type="checkbox" name="" class="checkbox" id="">
+  <input type="checkbox" name="" class="checkbox" id="">
+  <input type="checkbox" name="" class="checkbox" id="big">
+  <h5 class="card-title py-1">You have a streak of 5. Keep Going!!!</h5>
+  
+  
+</div>
+</div> */}
 
 async function getMotivationalQuote(){
     const resp = await fetch("https://type.fit/api/quotes")
@@ -129,12 +202,12 @@ const images =[
     "https://images.unsplash.com/photo-1521833965051-8273d0579115?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
     "https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1174&q=80",
     "https://images.unsplash.com/photo-1497561813398-8fcc7a37b567?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    "https://images.unsplash.com/photo-1505027492977-1037f14c46fa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=965&q=80",
     "https://images.unsplash.com/photo-1484100356142-db6ab6244067?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1067&q=80",
-    "https://images.unsplash.com/photo-1533678401910-65d369f886db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=677&q=80",
     "https://images.unsplash.com/photo-1525954294489-85bb0c9d2369?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
     "https://images.unsplash.com/photo-1523995669073-7f16bd0e82f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80",
-    "https://images.unsplash.com/photo-1560165427-318ff4b78a0b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80"
+    "https://images.unsplash.com/photo-1560165427-318ff4b78a0b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80",
+    "https://images.unsplash.com/photo-1556529260-2c56d89db68c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80",
+    "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
 
 ]
 

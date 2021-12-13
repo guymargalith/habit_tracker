@@ -15,6 +15,7 @@ body{
     font-family: 'Varela Round', sans-serif;
     color: white;
     text-shadow: 2px 2px 2px black;
+    text-align: center;
 }
 
 h1{
@@ -37,4 +38,43 @@ button{
 
 .button-width{
     width:10rem;
+}
+
+.big{
+    top: 2rem;
+      width: 3rem;
+      height: 3rem;
+    }
+
+.card{
+    background-color: rgb(104, 198, 230);
+    margin-left: 3rem;
+    margin-right: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card-header{
+    font-size: 2rem;
+}
+
+.card-title{
+    margin-right: 10rem;
+}
+
+
+.dateTopping{
+margin-top: 1.58rem;
+
+
+
+}
+
+input{
+    margin-right: 0.5rem;
+    margin-left: 3rem;
+    width: 30px;
+    height: 30px;
+    margin-top: 22px;
+
 }

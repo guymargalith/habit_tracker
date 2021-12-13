@@ -7,27 +7,29 @@ const mainSection = document.querySelector("#main-section");
 
 // renderHomepage();
 
-const publicRoutes = ['#', '#login', '#register'];
-const privateRoutes = ['#userhabits'];
+renderUserHabitsPage();
 
-window.addEventListener('hashchange', updateMain)
-window.addEventListener('load', updateMain)
+// const publicRoutes = ['#', '#login', '#register'];
+// const privateRoutes = ['#userhabits'];
 
-function updateMain(){
-    const path = window.location.hash
-    mainSection.innerHTML ='';
-    switch (path){
-    case '':
-        renderHomepage(); break;
-    case '#':
-        renderHomepage(); break;
-    case '#login':
-        renderLoginForm(); break;
-    case '#register':
-        renderRegisterForm(); break;
-    }
+// window.addEventListener('hashchange', updateMain)
+// window.addEventListener('load', updateMain)
+
+// function updateMain(){
+//     const path = window.location.hash
+//     mainSection.innerHTML ='';
+//     switch (path){
+//     case '':
+//         renderHomepage(); break;
+//     case '#':
+//         renderHomepage(); break;
+//     case '#login':
+//         renderLoginForm(); break;
+//     case '#register':
+//         renderRegisterForm(); break;
+//     }
     
-}
+// }
 
 
 // function updateMain(){
