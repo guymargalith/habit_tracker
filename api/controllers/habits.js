@@ -78,5 +78,16 @@ router.get('/:id/weekly', verifyToken, async (req, res) => {
     }
 })
 
+router.delete('/:id', verifyToken, async (req, res) => {
+    try {
+        const habit = await Habit.findByID(req.params.id)
+        console.log(habit)
+        await habit.destroy()
+        res.status(204)
+    } catch(err){
+        res.status(500).json({err})
+    }
+})
+
 module.exports = router
 
