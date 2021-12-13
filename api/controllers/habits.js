@@ -46,6 +46,7 @@ router.post('/', verifyToken, async (req, res) => {
     }
 })
 
+// route for retrieving the current streak of a specific habit
 router.get('/:id/streak', verifyToken, async (req, res) => {
     try{
         const habit = await Habit.findByID(req.params.id)

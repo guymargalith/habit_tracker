@@ -1,4 +1,3 @@
-const { CustomConsole } = require('@jest/console');
 const db = require('../db_config/init');
 const Log = require('./Log')
 
