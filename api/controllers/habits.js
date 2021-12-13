@@ -57,4 +57,14 @@ router.get('/:id/streak', verifyToken, async (req, res) => {
     }
 })
 
+router.get('/:id/weekly', verifyToken, async (req, res) => {
+    try{
+        const habit = await Habit.findByID(req.params.id)
+        const weeklyLogs = await habit.weeklyLogs
+        res.status(200).json({logs: weeklyLogs})
+    } catch(err){
+        res.status(404).json({err})
+    }
+})
+
 module.exports = router
