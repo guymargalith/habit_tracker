@@ -78,28 +78,25 @@ class Habit {
                 const logs = await this.findAllLogs;
                 // console.log(logs)
                 const logLength = logs.length;
-                let startDate = new Date(new Date().toDateString()).getTime();
-                startDate = startDate/1000
+                // let startDate = new Date(new Date().toDateString()).getTime();
+                // startDate = startDate/1000
+                let startDate = 1639353600;
                 // console.log(startDate)
                 if(logLength < this.frequency){
                     res(0)
-                } else if(logs[0] <= startDate - (6.048e+5)){
-                    res(0)
                 } else {
-                    let count = 0;
-                    while(count < logLength && logs[count] > startDate - (6.048e+5)){
-                        count++
-                        // console.log(count, 'a')
+                    let currentWeekIndex = 0;
+                    while(currentWeekIndex < logLength && logs[currentWeekIndex] > startDate - (6.048e+5)){
+                        currentWeekIndex++
+                        // console.log(currentWeekIndex, 'a')
                     }
-                    count--
-                    let count2 = -1;
-                    let weekCount = 1;
+                    let findStartOfStreakIndex = -1;
+                    let weekCount = 2;
                     let status = true;
-                    const startingPoint = logs[count]
                     while(status){
                         let freqCount = 0;
-                        while(count + count2 + 1 < logLength && logs[count + count2 + 1] > startingPoint - (weekCount * 6.048e+5)){
-                            count2++
+                        while(currentWeekIndex + findStartOfStreakIndex + 1 < logLength && logs[currentWeekIndex + findStartOfStreakIndex + 1] > startDate - (weekCount * 6.048e+5)){
+                            findStartOfStreakIndex++
                             freqCount++
                             // console.log(freqCount, 'b')
                         }
@@ -111,29 +108,29 @@ class Habit {
                         }
 
                     }
-                    let newCount = count + count2;
+                    let actualStreakStartIndex = currentWeekIndex + findStartOfStreakIndex;
                     let status2 = true;
                     // console.log(newCount, logs[newCount])
                     while(status2){
                         let freqCount = 1;
-                        while(newCount - freqCount > -1 && logs[newCount - freqCount] < logs[newCount] + (6.048e+5)){
+                        while(actualStreakStartIndex - freqCount > -1 && logs[actualStreakStartIndex - freqCount] < logs[actualStreakStartIndex] + (6.048e+5)){
                             freqCount++
                             // console.log(freqCount, 'd')
                         }
-                        // console.log(newCount, logs[newCount])
+                        // console.log(actualStreakStartIndex, logs[actualStreakStartIndex])
                         if(freqCount < this.frequency){
-                            newCount = newCount - 1;
+                            actualStreakStartIndex = actualStreakStartIndex - 1;
                         } else {
                             status2 = false;
                         }
                     }
-                    let streak = Math.floor((startDate-logs[newCount])/(6.048e+5));
-                    let lastCount = 0;
-                    while(lastCount < logLength && logs[lastCount] >= logs[newCount] + (streak * 6.048e+5)){
-                        lastCount++
-                        // console.log(lastCount, 'e')
+                    let streak = Math.floor((startDate-logs[actualStreakStartIndex])/(6.048e+5));
+                    let frequencyCurrentWeek = 0;
+                    while(frequencyCurrentWeek < logLength && logs[frequencyCurrentWeek] >= logs[actualStreakStartIndex] + (streak * 6.048e+5)){
+                        frequencyCurrentWeek++
+                        // console.log(frequencyCurrentWeek, 'e')
                     }
-                    if(lastCount >= this.frequency){
+                    if(frequencyCurrentWeek >= this.frequency){
                         streak = streak + 1;
                     }
                     res(streak)

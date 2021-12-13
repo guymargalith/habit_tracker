@@ -5,7 +5,7 @@ const { verifyToken } = require('../middleware/auth');
 
 const Log = require('../models/Log');
 
-// route to fetch all the users and their information (likely admin feature)
+// route to fetch all the logs (likely admin feature)
 router.get('/', verifyToken, async (req, res) => {
     try {
         const logs = await Log.all
@@ -13,6 +13,10 @@ router.get('/', verifyToken, async (req, res) => {
     } catch(err){
         res.status(500).json({err})
     }
+})
+
+router.delete('/:id', verifyToken, async (req, res) => {
+
 })
 
 module.exports = router
