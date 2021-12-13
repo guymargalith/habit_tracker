@@ -47,10 +47,9 @@ class Log {
         return new Promise(async (res, rej) => {
             try {
                 await db.query("DELETE FROM logs WHERE id = $1;", [this.id]);
-                let log = new Log(result.rows[0]);
-                res(log)
+                res('Log was deleted')
             } catch (err) {
-                rej(`Error creating log: ${err}`)
+                rej(`Error deleting log: ${err}`)
             }
         })
     }
