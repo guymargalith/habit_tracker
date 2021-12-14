@@ -276,6 +276,9 @@ function showHabitForm(form){
     else{
         form.style.display = "none"
         habitButton.textContent = "Add Habit"
+        form.style.display = 'none';
+        form.habit.value = "";
+        form.frequency.value = "";
     }
     
 }
