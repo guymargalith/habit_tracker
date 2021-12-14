@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Antic&family=Balsamiq+Sans:wght@700&family=Cabin&family=Dancing+Script:wght@400;500;700&family=Lato:wght@300;400&family=Montserrat:wght@300;400&family=Varela+Round&display=swap');
+
+
+
+body{
+    background:url('https://images.unsplash.com/photo-1428908728789-d2de25dbd4e2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')
+    no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: 'Varela Round', sans-serif;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+}
+
+h1{
+    font-size:5rem;
+    margin-top: 4rem;
+}
+
+a{
+    text-align: center;
+}
+
+button{
+    margin-top: 2rem;
+}
+
+#main-section{
+    background:transparent;
+}
+
+
+
