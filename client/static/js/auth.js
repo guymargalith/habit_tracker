@@ -42,10 +42,10 @@ function login(token){
     window.location.hash = '#user-habits';
 }
 
-// function logout(){
-//     localStorage.clear();
-//     window.location.hash = '#login';
-// }
+function logout(){
+    localStorage.clear();
+    window.location.hash = '#login';
+}
 
 // function currentUser(){
 //     const username = localStorage.getItem('username')
