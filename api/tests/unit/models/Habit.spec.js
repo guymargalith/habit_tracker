@@ -48,4 +48,15 @@ describe('Habit', () => {
             expect(result).toBeInstanceOf(Habit)
         })
     });
+
+    describe('destroy', () => {
+        test('it resolves with message on successful db query', async () => {
+            let habitData = { id: 1, name: 'New Habit' }
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({ id: 1, name: 'New Log' });
+            let testHabit = new Habit({ habitData })
+            const result = await testHabit.destroy();
+            expect(result).toBe('Habit and respective logs were deleted')
+        })
+    });
 })
