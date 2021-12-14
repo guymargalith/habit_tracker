@@ -61,7 +61,7 @@ function renderLoginForm(){
             mainSection.appendChild(title)
             mainSection.appendChild(secondTitle)
             mainSection.appendChild(form);
-            // form.addEventListener("submit", someFunction())
+            form.addEventListener("submit", requestLogin)
 }
 
 function renderRegisterForm(){
@@ -74,9 +74,8 @@ function renderRegisterForm(){
     secondTitle.textContent = 'Did You Ever Hear About The Orange Headed Man';
     const fields = [
                 { tag: 'input', attributes: { type: 'username', name: 'username', placeholder: 'Username' } },
-                { tag: 'input', attributes: { type: 'username', name: 'username', placeholder: 'Email' } },
                 { tag: 'input', attributes: { type: 'password', name: 'password', placeholder: 'Password' } },
-                { tag: 'input', attributes: { type: 'password', name: 'password', placeholder: 'Confirm Password' } },
+                { tag: 'input', attributes: { type: 'password', name: 'confirm-password', placeholder: 'Confirm Password' } },
                 { tag: 'button', attributes: { type: 'submit', value: 'Login' } }
             ]
             const form = document.createElement('form');
@@ -84,11 +83,11 @@ function renderRegisterForm(){
                 let field = document.createElement(f.tag);
                 Object.entries(f.attributes).forEach(([a, v]) => {
                     field.setAttribute(a, v);
-                    if(field.name === 'username' || field.name === 'password'){
+                    if(field.name === 'username' || field.name === 'password' || field.name === 'confirm-password'){
                         field.classList = 'form-control col input-spacing';
                     }
                     else{
-                        field.textContent = "Regsiter"
+                        field.textContent = "Register"
                         field.classList = 'btn btn-lg btn-danger button-width'
                     }
                     form.appendChild(field);
@@ -98,20 +97,26 @@ function renderRegisterForm(){
             mainSection.appendChild(title)
             mainSection.appendChild(secondTitle)
             mainSection.appendChild(form);
-            // form.addEventListener("submit", someFunction())
+            form.addEventListener("submit", requestRegistration)
 }
 
 
 async function renderUserHabitsPage(){
-    const id = 1;
     document.body.background = changeBackgroundImage()
     const userHabitTitle = document.createElement('h1');
     const userSecondTitle = document.createElement('h4');
-    userHabitTitle.textContent = "Welcome to Jumanji"
+    const habitButton = createAddHabitButton();
+    const habitForm = createAddHabbitForm();
+    habitForm.style.display = 'none';
+    userHabitTitle.textContent = "TRACKIT"
     userSecondTitle.textContent = await getMotivationalQuote();
     mainSection.appendChild(userHabitTitle);
     mainSection.appendChild(userSecondTitle);
-    const data = await getHabitsByUserId(id)
+    mainSection.appendChild(habitButton);
+    mainSection.appendChild(habitForm);
+    habitButton.addEventListener("click", e => showHabitForm(habitForm))
+    const data = await getHabitsByUserId(localStorage.getItem('id'))
+    // const data = await getHabitsByUserId(1)
     console.log(data)
     data.forEach(habit => buildCards(habit))
 
@@ -126,20 +131,24 @@ async function buildCards(habit){
     cardTitle.classList = 'card-header text-center';
     cardTitle.textContent = habit.name;
     let checkboxArea = document.createElement('div')
-    let dateSpace = document.createElement('div');
-    const streakTitle = await getStreakInfo(habit.user_id);
+    const streakTitle = await getStreakInfo(habit.id);
     streakTitle.classList = 'streak';
+    streakTitle.setAttribute('habit-id', habit.id)
     card.appendChild(cardTitle);
-    const logs = await getWeeklyLogs(habit.id)
+    const logsRaw = await getWeeklyLogs(habit.id)
+    const logs = logsRaw.map(r => r.date)
     console.log(logs)
     for(let i =1; i <= 7; i++){
     let checkbox = document.createElement('input')
     checkbox.type = 'checkbox'; 
     checkbox.setAttribute('value', timestamp(i));
-    // 
-    // if(logs.forEach(r => r.date).includes(checkbox.getAttribute('value'))){
-    //     // checkbox
-    // }
+    checkbox.setAttribute('habit-id', habit.id);
+    if(logs.includes(parseInt(checkbox.getAttribute('value')))){
+        let index = logs.findIndex(e => e===parseInt(checkbox.getAttribute('value')));
+        checkbox.setAttribute("log-id", logsRaw[index].id)
+        checkbox.checked = true;
+    }
+    checkbox.addEventListener('change', logManage)
     checkboxArea.appendChild(checkbox);
     
     if(i === 7){
@@ -151,18 +160,68 @@ async function buildCards(habit){
     
     checkboxArea.appendChild(dateCheckbox);
     }
+
     checkboxArea.classList = 'd-flex card-body';
     checkboxArea.append(streakTitle)
     card.appendChild(checkboxArea);
-    mainSection.appendChild(card)
+    mainSection.appendChild(card) 
+}
+
+function createAddHabitButton(){
+    const habitButton = document.createElement('button');
+    habitButton.textContent = "Add Habit";
+    habitButton.classList = 'btn btn-lg btn-danger button-width'
+    return habitButton;
+}
 
 
+function createAddHabbitForm(){
+    const fields = [
+        { tag: 'input', attributes: { type: 'text', name: 'habit', placeholder: 'Habit Name' } },
+        { tag: 'input', attributes: { type: 'text', name: 'frequency', placeholder: 'How Often Do You Want To Do This Per Week?' } },
+        { tag: 'button', attributes: { type: 'submit', value: 'Submit' } }
+    ]
+    const form = document.createElement('form');
+    fields.forEach(f => {
+        let field = document.createElement(f.tag);
+        Object.entries(f.attributes).forEach(([a, v]) => {
+            field.setAttribute(a, v);
+            if(field.name === 'habit' || field.name === 'frequency'){
+                field.classList = 'form-control col input-spacing';
+            }
+            else{
+                field.textContent = "Submit"
+                field.classList = 'btn btn-lg btn-danger button-width'
+            }
+            form.appendChild(field);
+        })
+    })
+    form.classList ="py-3 text-center mx-auto row g-3"
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        let form = e.target
+        const newHabit = await createNewHabit(form.habit.value, form.frequency.value)
+        buildCards(newHabit)
+    })
+    return form
+}
+
+
+
+function showHabitForm(form){
+    console.log("clicked")
+    if(form.style.display == "none"){
+        form.style.display = "block"
+    }
+    else{
+        form.style.display = "none"
+    }
     
 }
 
 async function getStreakInfo(id)
 {
-    let streakTitle = document.createElement('div')
+    let streakTitle = document.createElement('h1')
     streakTitle.classList = 'card-title py-1';
     const data = await getStreak(id);
     console.log(data);
@@ -170,7 +229,13 @@ async function getStreakInfo(id)
     return streakTitle;
 
 }
-getStreakInfo(1);
+
+async function streakUpdater(id) {
+    let data = await getStreak(id);
+    console.log(data)
+    document.querySelector(`.streak[habit-id="${id}"]`).textContent = `Your current streak is: ${data}`
+}
+// getStreakInfo(1);
 
 function getDay(i){
     let day = new Date(); 
@@ -180,29 +245,12 @@ function getDay(i){
 
 function timestamp(i){
     let dateEdit = new Date()
-    dateEdit.setDate(dateEdit.getDate() - (7+i))
+    dateEdit.setDate(dateEdit.getDate() - 7 + i)
     let date = new Date(dateEdit.toDateString()).getTime();
     return date/1000
 }
 
-getDay()
-{/* <div class="card ">
-<div class="card-header text-center ">
-  Don't eat an egg
-</div>
-<div class="d-flex card-body">
-    <input type="checkbox" name="" class="checkbox" id="">
-  <input type="checkbox" name="" class="checkbox" id="">
-  <input type="checkbox" name="" class="checkbox" id="">
-  <input type="checkbox" name="" class="checkbox" id="">
-  <input type="checkbox" name="" class="checkbox" id="">
-  <input type="checkbox" name="" class="checkbox" id="">
-  <input type="checkbox" name="" class="checkbox" id="big">
-  <h5 class="card-title py-1">You have a streak of 5. Keep Going!!!</h5>
-  
-  
-</div>
-</div> */}
+
 
 async function getMotivationalQuote(){
     const resp = await fetch("https://type.fit/api/quotes")
@@ -221,6 +269,18 @@ const image = images[num];
 console.log(images[num])
 return image
 
+}
+
+async function logManage(e){
+    const checkbox = e.target;
+    if(checkbox.checked){
+        let log = await createLog(checkbox.getAttribute('habit-id'), checkbox.value)
+        checkbox.setAttribute('log-id', log.id)
+    } else {
+        await deleteLog(checkbox.getAttribute('log-id'))
+        checkbox.setAttribute('log-id', "")
+    }
+    await streakUpdater(checkbox.getAttribute('habit-id'))
 }
 
 
