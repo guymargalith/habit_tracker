@@ -15,8 +15,21 @@ async function getUsers(){
 async function getHabitsByUserId(id){
     const result = await fetch(`http://localhost:3000/habits/specific/${id}`)
     const data = await result.json();
-    const habits = data.map(d =>d.name)
-    return habits
+    // const habits = data.map(d =>d.name)
+    return data
+}
+
+async function getStreak(id){
+    const result = await fetch(`http://localhost:3000/habits/${id}/streak`)
+    const data = await result.json();
+    return data.streak; 
+
+}
+
+async function getWeeklyLogs(id){
+    const result = await fetch(`http://localhost:3000/habits/${id}/weekly`)
+    const data = await result.json();
+    return data.logs; 
 }
 // async function getAllPosts(){
 //     try {

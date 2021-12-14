@@ -31,34 +31,5 @@ button{
     background:transparent;
 }
 
-.card{
-    background-color: rgb(104, 198, 230);
-    margin-left: 3rem;
-    margin-right: 3rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
 
-.card-header{
-    font-size: 2rem;
-}
 
-.card-title{
-    margin-right: 10rem;
-}
-
-.checkbox{
- top: 1.2rem;
-  width: 1.85rem;
-  height: 1.85rem;
-}
-
-input{
-    margin-right: 2rem;
-}
-
-#big{
-top: 2rem;
-  width: 3rem;
-  height: 3rem;
-}

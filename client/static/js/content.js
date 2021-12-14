@@ -118,21 +118,28 @@ async function renderUserHabitsPage(){
 }
 
 
-function buildCards(habit){
+async function buildCards(habit){
     let card = document.createElement("div");
-    card.classList = 'card'; 
+    card.classList = 'card';
+    card.setAttribute("value", habit.id); 
     let cardTitle = document.createElement('div')
     cardTitle.classList = 'card-header text-center';
-    let streakTitle = document.createElement('div')
-    streakTitle.classList = 'card-title py-1';
-    cardTitle.textContent = habit;
+    cardTitle.textContent = habit.name;
     let checkboxArea = document.createElement('div')
     let dateSpace = document.createElement('div');
+    const streakTitle = await getStreakInfo(habit.user_id);
+    streakTitle.classList = 'streak';
     card.appendChild(cardTitle);
+    const logs = await getWeeklyLogs(habit.id)
+    console.log(logs)
     for(let i =1; i <= 7; i++){
     let checkbox = document.createElement('input')
     checkbox.type = 'checkbox'; 
-    checkbox.id = i;
+    checkbox.setAttribute('value', timestamp(i));
+    // 
+    // if(logs.forEach(r => r.date).includes(checkbox.getAttribute('value'))){
+    //     // checkbox
+    // }
     checkboxArea.appendChild(checkbox);
     
     if(i === 7){
@@ -141,20 +148,41 @@ function buildCards(habit){
     let dateCheckbox = document.createElement('p');
     dateCheckbox.classList = 'dateTopping';
     dateCheckbox.textContent = `${getDay(i)}`;
+    
     checkboxArea.appendChild(dateCheckbox);
     }
     checkboxArea.classList = 'd-flex card-body';
+    checkboxArea.append(streakTitle)
     card.appendChild(checkboxArea);
     mainSection.appendChild(card)
- 
-    
+
+
     
 }
+
+async function getStreakInfo(id)
+{
+    let streakTitle = document.createElement('div')
+    streakTitle.classList = 'card-title py-1';
+    const data = await getStreak(id);
+    console.log(data);
+    streakTitle.textContent = `Your current streak is: ${data}`;
+    return streakTitle;
+
+}
+getStreakInfo(1);
 
 function getDay(i){
     let day = new Date(); 
     day.setDate(day.getDate() + i)
     return day.toLocaleString('en-us', {  weekday: 'short' });
+}
+
+function timestamp(i){
+    let dateEdit = new Date()
+    dateEdit.setDate(dateEdit.getDate() - (7+i))
+    let date = new Date(dateEdit.toDateString()).getTime();
+    return date/1000
 }
 
 getDay()
