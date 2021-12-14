@@ -30,7 +30,7 @@ router.delete('/:id', verifyToken, async (req, res) => {
     try {
         const log = await Log.findByID(req.params.id)
         await log.destroy()
-        res.status(204)
+        res.status(204).end()
     } catch(err){
         res.status(500).json({err})
     }

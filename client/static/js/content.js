@@ -278,7 +278,7 @@ async function logManage(e){
         checkbox.setAttribute('log-id', log.id)
     } else {
         await deleteLog(checkbox.getAttribute('log-id'))
-        checkbox.setAttribute('log-id', "")
+        checkbox.removeAttribute('log-id')
     }
     await streakUpdater(checkbox.getAttribute('habit-id'))
 }
