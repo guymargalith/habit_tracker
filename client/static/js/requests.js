@@ -64,7 +64,7 @@ async function deleteLog(logId){
         method: 'DELETE',
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch(`http://localhost:3000/logs/${logId}`, options)
+    await fetch(`http://localhost:3000/logs/${logId}`, options)
 }
 
 
