@@ -20,6 +20,10 @@ async function requestLogin(e){
             mainSection.appendChild(errorMessage);
         }
     }
+    login(data.token);
+  } catch (err) {
+    console.warn(err);
+  }
 }
 
 async function requestRegistration(e) {
@@ -56,14 +60,18 @@ async function requestRegistration(e) {
         }
         
     }
+    requestLogin(e);
+  } catch (err) {
+    console.warn(err);
+  }
 }
 
-function login(token){
-    const user = jwt_decode(token);
-    localStorage.setItem("token", token);
-    localStorage.setItem("username", user.username);
-    localStorage.setItem("id", user.id);
-    window.location.hash = '#user-habits';
+function login(token) {
+  const user = jwt_decode(token);
+  localStorage.setItem("token", token);
+  localStorage.setItem("username", user.username);
+  localStorage.setItem("id", user.id);
+  window.location.hash = "#user-habits";
 }
 
 function logout(){
