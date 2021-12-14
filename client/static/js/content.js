@@ -1,303 +1,361 @@
-async function renderHomepage(){
-    window.location.hash = '#';
-    document.body.background = changeBackgroundImage()
-    const welcomeTitle = document.createElement("h1");
-    const welcomeSubTitle = document.createElement("h4");
-    const buttonArea = document.createElement("div");
-    const loginButton = document.createElement("button");
-    const registerButton = document.createElement("button");
-    const loginAnchorTag = document.createElement("a");
-    const registerAnchorTag = document.createElement("a");
-    welcomeTitle.textContent = "TRACKIT";
-    welcomeTitle.className = "px-5 py-3 text-center";
-    welcomeSubTitle.textContent = await getMotivationalQuote()
-    welcomeSubTitle.className = "px-5 py-1 text-center";
-    loginButton.textContent = "Login";
-    registerButton.textContent = "Register";
-    loginButton.className = "btn btn-lg btn-danger";
-    loginButton.type = "submit";
-    registerButton.className = "btn btn-lg btn-danger";
-    buttonArea.className = "d-flex gap-4 col-2 mx-auto";
-    loginAnchorTag.href = "#login"
-    registerAnchorTag.href='#register'
-    mainSection.appendChild(welcomeTitle);
-    mainSection.appendChild(welcomeSubTitle);
-    loginAnchorTag.appendChild(loginButton);
-    registerAnchorTag.appendChild(registerButton);
-    buttonArea.appendChild(loginAnchorTag);
-    buttonArea.appendChild(registerAnchorTag);
-    mainSection.appendChild(buttonArea)
+async function renderHomepage() {
+  window.location.hash = "#";
+  document.body.background = changeBackgroundImage();
+  const welcomeTitle = document.createElement("h1");
+  const welcomeSubTitle = document.createElement("h4");
+  const buttonArea = document.createElement("div");
+  const loginButton = document.createElement("button");
+  const registerButton = document.createElement("button");
+  const loginAnchorTag = document.createElement("a");
+  const registerAnchorTag = document.createElement("a");
+  welcomeTitle.textContent = "TRACKIT";
+  welcomeTitle.className = "px-5 py-3 text-center";
+  welcomeSubTitle.textContent = await getMotivationalQuote();
+  welcomeSubTitle.className = "px-5 py-1 text-center";
+  loginButton.textContent = "Login";
+  registerButton.textContent = "Register";
+  loginButton.className = "btn btn-lg btn-danger";
+  loginButton.type = "submit";
+  registerButton.className = "btn btn-lg btn-danger";
+  buttonArea.className = "d-flex gap-4 col-2 mx-auto";
+  loginAnchorTag.href = "#login";
+  registerAnchorTag.href = "#register";
+  mainSection.appendChild(welcomeTitle);
+  mainSection.appendChild(welcomeSubTitle);
+  loginAnchorTag.appendChild(loginButton);
+  registerAnchorTag.appendChild(registerButton);
+  buttonArea.appendChild(loginAnchorTag);
+  buttonArea.appendChild(registerAnchorTag);
+  mainSection.appendChild(buttonArea);
 }
 
-function renderLoginForm(){
-    document.body.background = changeBackgroundImage()
-    const title = document.createElement('h1')
-    const secondTitle = document.createElement('h4')
-    title.className = "px-5 py-3 text-center";
-    secondTitle.className = "px-5 py-3 text-center";
-    title.textContent = 'Login'
-    secondTitle.textContent = 'Every Journey Begins With a Single Step';
-    const fields = [
-                { tag: 'input', attributes: { type: 'username', name: 'username', placeholder: 'Username' } },
-                { tag: 'input', attributes: { type: 'password', name: 'password', placeholder: 'Password' } },
-                { tag: 'button', attributes: { type: 'submit', value: 'Login' } }
-            ]
-            const form = document.createElement('form');
-            fields.forEach(f => {
-                let field = document.createElement(f.tag);
-                Object.entries(f.attributes).forEach(([a, v]) => {
-                    field.setAttribute(a, v);
-                    if(field.name === 'username' || field.name === 'password'){
-                        field.classList = 'form-control col input-spacing';
-                    }
-                    else{
-                        field.textContent = "Login"
-                        field.classList = 'btn btn-lg btn-danger col-md-2'
-                    }
-                    form.appendChild(field);
-                })
-            })
-            form.classList ="px-5 py-3 text-center mx-auto row g-3"
-            mainSection.appendChild(title)
-            mainSection.appendChild(secondTitle)
-            mainSection.appendChild(form);
-            form.addEventListener("submit", requestLogin)
+function renderLoginForm() {
+  document.body.background = changeBackgroundImage();
+  const title = document.createElement("h1");
+  const secondTitle = document.createElement("h4");
+  title.className = "px-5 py-3 text-center";
+  secondTitle.className = "px-5 py-3 text-center";
+  title.textContent = "Login";
+  secondTitle.textContent = "Every Journey Begins With a Single Step";
+  const fields = [
+    {
+      tag: "input",
+      attributes: {
+        type: "username",
+        name: "username",
+        placeholder: "Username",
+      },
+    },
+    {
+      tag: "input",
+      attributes: {
+        type: "password",
+        name: "password",
+        placeholder: "Password",
+      },
+    },
+    { tag: "button", attributes: { type: "submit", value: "Login" } },
+  ];
+  const form = document.createElement("form");
+  fields.forEach((f) => {
+    let field = document.createElement(f.tag);
+    Object.entries(f.attributes).forEach(([a, v]) => {
+      field.setAttribute(a, v);
+      if (field.name === "username" || field.name === "password") {
+        field.classList = "form-control col input-spacing";
+      } else {
+        field.textContent = "Login";
+        field.classList = "btn btn-lg btn-danger col-md-2";
+      }
+      form.appendChild(field);
+    });
+  });
+  form.classList = "px-5 py-3 text-center mx-auto row g-3";
+  mainSection.appendChild(title);
+  mainSection.appendChild(secondTitle);
+  mainSection.appendChild(form);
+  form.addEventListener("submit", requestLogin);
 }
 
-function renderRegisterForm(){
-    document.body.background = changeBackgroundImage()
-    const title = document.createElement('h1')
-    const secondTitle = document.createElement('h4')
-    title.className = "px-5 py-3 text-center";
-    secondTitle.className = "px-5 py-3 text-center";
-    title.textContent = 'Register'
-    secondTitle.textContent = 'Did You Ever Hear About The Orange Headed Man';
-    const fields = [
-                { tag: 'input', attributes: { type: 'username', name: 'username', placeholder: 'Username' } },
-                { tag: 'input', attributes: { type: 'password', name: 'password', placeholder: 'Password' } },
-                { tag: 'input', attributes: { type: 'password', name: 'confirm-password', placeholder: 'Confirm Password' } },
-                { tag: 'button', attributes: { type: 'submit', value: 'Login' } }
-            ]
-            const form = document.createElement('form');
-            fields.forEach(f => {
-                let field = document.createElement(f.tag);
-                Object.entries(f.attributes).forEach(([a, v]) => {
-                    field.setAttribute(a, v);
-                    if(field.name === 'username' || field.name === 'password' || field.name === 'confirm-password'){
-                        field.classList = 'form-control col input-spacing';
-                    }
-                    else{
-                        field.textContent = "Register"
-                        field.classList = 'btn btn-lg btn-danger button-width'
-                    }
-                    form.appendChild(field);
-                })
-            })
-            form.classList ="px-5 py-3 text-center mx-auto row g-3"
-            mainSection.appendChild(title)
-            mainSection.appendChild(secondTitle)
-            mainSection.appendChild(form);
-            form.addEventListener("submit", requestRegistration)
+function renderRegisterForm() {
+  document.body.background = changeBackgroundImage();
+  const title = document.createElement("h1");
+  const secondTitle = document.createElement("h4");
+  title.className = "px-5 py-3 text-center";
+  secondTitle.className = "px-5 py-3 text-center";
+  title.textContent = "Register";
+  secondTitle.textContent = "Did You Ever Hear About The Orange Headed Man";
+  const fields = [
+    {
+      tag: "input",
+      attributes: {
+        type: "username",
+        name: "username",
+        placeholder: "Username",
+      },
+    },
+    {
+      tag: "input",
+      attributes: {
+        type: "password",
+        name: "password",
+        id: "password1",
+        placeholder: "Password",
+      },
+    },
+    {
+      tag: "input",
+      attributes: {
+        type: "password",
+        name: "confirm-password",
+        id: "password2",
+        placeholder: "Confirm Password",
+      },
+    },
+    { tag: "button", attributes: { type: "submit", value: "Login" } },
+  ];
+  const form = document.createElement("form");
+  fields.forEach((f) => {
+    let field = document.createElement(f.tag);
+    Object.entries(f.attributes).forEach(([a, v]) => {
+      field.setAttribute(a, v);
+      field.attributes.required = "required";
+      if (
+        field.name === "username" ||
+        field.name === "password" ||
+        field.name === "confirm-password"
+      ) {
+        field.classList = "form-control col input-spacing";
+      } else {
+        field.textContent = "Register";
+        field.classList = "btn btn-lg btn-danger button-width";
+      }
+      form.appendChild(field);
+    });
+  });
+  form.classList = "px-5 py-3 text-center mx-auto row g-3";
+  mainSection.appendChild(title);
+  mainSection.appendChild(secondTitle);
+  mainSection.appendChild(form);
+  form.addEventListener("submit", checkPasswords);
 }
 
-
-async function renderUserHabitsPage(){
-    document.body.background = changeBackgroundImage()
-    const userHabitTitle = document.createElement('h1');
-    const userSecondTitle = document.createElement('h4');
-    const habitButton = createAddHabitButton();
-    const habitForm = createAddHabbitForm();
-    habitForm.style.display = 'none';
-    userHabitTitle.textContent = "TRACKIT"
-    userSecondTitle.textContent = await getMotivationalQuote();
-    mainSection.appendChild(userHabitTitle);
-    mainSection.appendChild(userSecondTitle);
-    mainSection.appendChild(habitButton);
-    mainSection.appendChild(habitForm);
-    habitButton.addEventListener("click", e => showHabitForm(habitForm))
-    const data = await getHabitsByUserId(localStorage.getItem('id'))
-    // const data = await getHabitsByUserId(1)
-    console.log(data)
-    data.forEach(habit => buildCards(habit))
-
+async function checkPasswords(e) {
+  e.preventDefault();
+  let password = document.getElementById("password1").value;
+  let confirmedPassword = document.getElementById("password2").value;
+  if (password != confirmedPassword) {
+    const errorMessage = document.createElement("div");
+    errorMessage.textContent = "Please make sure your passwords match";
+    errorMessage.style.color = "white";
+    mainSection.appendChild(errorMessage);
+  } else {
+    await requestRegistration(e);
+  }
 }
 
+async function renderUserHabitsPage() {
+  document.body.background = changeBackgroundImage();
+  const userHabitTitle = document.createElement("h1");
+  const userSecondTitle = document.createElement("h4");
+  const habitButton = createAddHabitButton();
+  const habitForm = createAddHabbitForm();
+  habitForm.style.display = "none";
+  userHabitTitle.textContent = "TRACKIT";
+  userSecondTitle.textContent = await getMotivationalQuote();
+  mainSection.appendChild(userHabitTitle);
+  mainSection.appendChild(userSecondTitle);
+  mainSection.appendChild(habitButton);
+  mainSection.appendChild(habitForm);
+  habitButton.addEventListener("click", (e) => showHabitForm(habitForm));
+  const data = await getHabitsByUserId(localStorage.getItem("id"));
+  // const data = await getHabitsByUserId(1)
+  console.log(data);
+  data.forEach((habit) => buildCards(habit));
+}
 
-async function buildCards(habit){
-    let card = document.createElement("div");
-    card.classList = 'card';
-    card.setAttribute("value", habit.id); 
-    let cardTitle = document.createElement('div')
-    cardTitle.classList = 'card-header text-center';
-    cardTitle.textContent = habit.name;
-    let checkboxArea = document.createElement('div')
-    const streakTitle = await getStreakInfo(habit.id);
-    streakTitle.classList = 'streak';
-    streakTitle.setAttribute('habit-id', habit.id)
-    card.appendChild(cardTitle);
-    const logsRaw = await getWeeklyLogs(habit.id)
-    const logs = logsRaw.map(r => r.date)
-    console.log(logs)
-    for(let i =1; i <= 7; i++){
-    let checkbox = document.createElement('input')
-    checkbox.type = 'checkbox'; 
-    checkbox.setAttribute('value', timestamp(i));
-    checkbox.setAttribute('habit-id', habit.id);
-    if(logs.includes(parseInt(checkbox.getAttribute('value')))){
-        let index = logs.findIndex(e => e===parseInt(checkbox.getAttribute('value')));
-        checkbox.setAttribute("log-id", logsRaw[index].id)
-        checkbox.checked = true;
+async function buildCards(habit) {
+  let card = document.createElement("div");
+  card.classList = "card";
+  card.setAttribute("value", habit.id);
+  let cardTitle = document.createElement("div");
+  cardTitle.classList = "card-header text-center";
+  cardTitle.textContent = habit.name;
+  let checkboxArea = document.createElement("div");
+  const streakTitle = await getStreakInfo(habit.id);
+  streakTitle.classList = "streak";
+  streakTitle.setAttribute("habit-id", habit.id);
+  card.appendChild(cardTitle);
+  const logsRaw = await getWeeklyLogs(habit.id);
+  const logs = logsRaw.map((r) => r.date);
+  console.log(logs);
+  for (let i = 1; i <= 7; i++) {
+    let checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.setAttribute("value", timestamp(i));
+    checkbox.setAttribute("habit-id", habit.id);
+    if (logs.includes(parseInt(checkbox.getAttribute("value")))) {
+      let index = logs.findIndex(
+        (e) => e === parseInt(checkbox.getAttribute("value"))
+      );
+      checkbox.setAttribute("log-id", logsRaw[index].id);
+      checkbox.checked = true;
     }
-    checkbox.addEventListener('change', logManage)
+    checkbox.addEventListener("change", logManage);
     checkboxArea.appendChild(checkbox);
-    
-    if(i === 7){
-        checkbox.classList = 'big';
+
+    if (i === 7) {
+      checkbox.classList = "big";
     }
-    let dateCheckbox = document.createElement('p');
-    dateCheckbox.classList = 'dateTopping';
+    let dateCheckbox = document.createElement("p");
+    dateCheckbox.classList = "dateTopping";
     dateCheckbox.textContent = `${getDay(i)}`;
-    
+
     checkboxArea.appendChild(dateCheckbox);
-    }
+  }
 
-    checkboxArea.classList = 'd-flex card-body';
-    checkboxArea.append(streakTitle)
-    card.appendChild(checkboxArea);
-    mainSection.appendChild(card) 
+  checkboxArea.classList = "d-flex card-body";
+  checkboxArea.append(streakTitle);
+  card.appendChild(checkboxArea);
+  mainSection.appendChild(card);
 }
 
-function createAddHabitButton(){
-    const habitButton = document.createElement('button');
-    habitButton.textContent = "Add Habit";
-    habitButton.classList = 'btn btn-lg btn-danger button-width'
-    return habitButton;
+function createAddHabitButton() {
+  const habitButton = document.createElement("button");
+  habitButton.textContent = "Add Habit";
+  habitButton.classList = "btn btn-lg btn-danger button-width";
+  return habitButton;
 }
 
-
-function createAddHabbitForm(){
-    const fields = [
-        { tag: 'input', attributes: { type: 'text', name: 'habit', placeholder: 'Habit Name' } },
-        { tag: 'input', attributes: { type: 'text', name: 'frequency', placeholder: 'How Often Do You Want To Do This Per Week?' } },
-        { tag: 'button', attributes: { type: 'submit', value: 'Submit' } }
-    ]
-    const form = document.createElement('form');
-    fields.forEach(f => {
-        let field = document.createElement(f.tag);
-        Object.entries(f.attributes).forEach(([a, v]) => {
-            field.setAttribute(a, v);
-            if(field.name === 'habit' || field.name === 'frequency'){
-                field.classList = 'form-control col input-spacing';
-            }
-            else{
-                field.textContent = "Submit"
-                field.classList = 'btn btn-lg btn-danger button-width'
-            }
-            form.appendChild(field);
-        })
-    })
-    form.classList ="py-3 text-center mx-auto row g-3"
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        let form = e.target
-        const newHabit = await createNewHabit(form.habit.value, form.frequency.value)
-        buildCards(newHabit)
-    })
-    return form
+function createAddHabbitForm() {
+  const fields = [
+    {
+      tag: "input",
+      attributes: { type: "text", name: "habit", placeholder: "Habit Name" },
+    },
+    {
+      tag: "input",
+      attributes: {
+        type: "text",
+        name: "frequency",
+        placeholder: "How Often Do You Want To Do This Per Week?",
+      },
+    },
+    { tag: "button", attributes: { type: "submit", value: "Submit" } },
+  ];
+  const form = document.createElement("form");
+  fields.forEach((f) => {
+    let field = document.createElement(f.tag);
+    Object.entries(f.attributes).forEach(([a, v]) => {
+      field.setAttribute(a, v);
+      if (field.name === "habit" || field.name === "frequency") {
+        field.classList = "form-control col input-spacing";
+      } else {
+        field.textContent = "Submit";
+        field.classList = "btn btn-lg btn-danger button-width";
+      }
+      form.appendChild(field);
+    });
+  });
+  form.classList = "py-3 text-center mx-auto row g-3";
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    let form = e.target;
+    const newHabit = await createNewHabit(
+      form.habit.value,
+      form.frequency.value
+    );
+    buildCards(newHabit);
+  });
+  return form;
 }
 
-
-
-function showHabitForm(form){
-    console.log("clicked")
-    if(form.style.display == "none"){
-        form.style.display = "block"
-    }
-    else{
-        form.style.display = "none"
-    }
-    
+function showHabitForm(form) {
+  console.log("clicked");
+  if (form.style.display == "none") {
+    form.style.display = "block";
+  } else {
+    form.style.display = "none";
+  }
 }
 
-async function getStreakInfo(id)
-{
-    let streakTitle = document.createElement('h1')
-    streakTitle.classList = 'card-title py-1';
-    const data = await getStreak(id);
-    console.log(data);
-    streakTitle.textContent = `Your current streak is: ${data}`;
-    return streakTitle;
-
+async function getStreakInfo(id) {
+  let streakTitle = document.createElement("h1");
+  streakTitle.classList = "card-title py-1";
+  const data = await getStreak(id);
+  console.log(data);
+  streakTitle.textContent = `Your current streak is: ${data}`;
+  return streakTitle;
 }
 
 async function streakUpdater(id) {
-    let data = await getStreak(id);
-    console.log(data)
-    document.querySelector(`.streak[habit-id="${id}"]`).textContent = `Your current streak is: ${data}`
+  let data = await getStreak(id);
+  console.log(data);
+  document.querySelector(
+    `.streak[habit-id="${id}"]`
+  ).textContent = `Your current streak is: ${data}`;
 }
 // getStreakInfo(1);
 
-function getDay(i){
-    let day = new Date(); 
-    day.setDate(day.getDate() + i)
-    return day.toLocaleString('en-us', {  weekday: 'short' });
+function getDay(i) {
+  let day = new Date();
+  day.setDate(day.getDate() + i);
+  return day.toLocaleString("en-us", { weekday: "short" });
 }
 
-function timestamp(i){
-    let dateEdit = new Date()
-    dateEdit.setDate(dateEdit.getDate() - 7 + i)
-    let date = new Date(dateEdit.toDateString()).getTime();
-    return date/1000
+function timestamp(i) {
+  let dateEdit = new Date();
+  dateEdit.setDate(dateEdit.getDate() - 7 + i);
+  let date = new Date(dateEdit.toDateString()).getTime();
+  return date / 1000;
 }
 
-
-
-async function getMotivationalQuote(){
-    const resp = await fetch("https://type.fit/api/quotes")
-    const data = await resp.json();
-    return data[randomNumber()].text
+async function getMotivationalQuote() {
+  const resp = await fetch("https://type.fit/api/quotes");
+  const data = await resp.json();
+  return data[randomNumber()].text;
 }
 
-function randomNumber(){
-   const number = Math.floor((Math.random() * 1642) + 1);
-   return number
+function randomNumber() {
+  const number = Math.floor(Math.random() * 1642 + 1);
+  return number;
 }
 
-function changeBackgroundImage(){
-let num = Math.ceil( Math.random() * images.length -1);
-const image = images[num];
-console.log(images[num])
-return image
-
+function changeBackgroundImage() {
+  let num = Math.ceil(Math.random() * images.length - 1);
+  const image = images[num];
+  console.log(images[num]);
+  return image;
 }
 
-async function logManage(e){
-    const checkbox = e.target;
-    if(checkbox.checked){
-        let log = await createLog(checkbox.getAttribute('habit-id'), checkbox.value)
-        checkbox.setAttribute('log-id', log.id)
-    } else {
-        await deleteLog(checkbox.getAttribute('log-id'))
-        checkbox.setAttribute('log-id', "")
-    }
-    await streakUpdater(checkbox.getAttribute('habit-id'))
+async function logManage(e) {
+  const checkbox = e.target;
+  if (checkbox.checked) {
+    let log = await createLog(
+      checkbox.getAttribute("habit-id"),
+      checkbox.value
+    );
+    checkbox.setAttribute("log-id", log.id);
+  } else {
+    await deleteLog(checkbox.getAttribute("log-id"));
+    checkbox.setAttribute("log-id", "");
+  }
+  await streakUpdater(checkbox.getAttribute("habit-id"));
 }
 
-
-const images =[
-    "https://images.unsplash.com/photo-1508558936510-0af1e3cccbab?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80", 
-    "https://images.unsplash.com/photo-1494959764136-6be9eb3c261e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    "https://images.unsplash.com/photo-1521833965051-8273d0579115?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1174&q=80",
-    "https://images.unsplash.com/photo-1497561813398-8fcc7a37b567?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    "https://images.unsplash.com/photo-1484100356142-db6ab6244067?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1067&q=80",
-    "https://images.unsplash.com/photo-1525954294489-85bb0c9d2369?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    "https://images.unsplash.com/photo-1523995669073-7f16bd0e82f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80",
-    "https://images.unsplash.com/photo-1560165427-318ff4b78a0b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80",
-    "https://images.unsplash.com/photo-1556529260-2c56d89db68c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80",
-    "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-
-]
+const images = [
+  "https://images.unsplash.com/photo-1508558936510-0af1e3cccbab?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+  "https://images.unsplash.com/photo-1494959764136-6be9eb3c261e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+  "https://images.unsplash.com/photo-1521833965051-8273d0579115?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1174&q=80",
+  "https://images.unsplash.com/photo-1497561813398-8fcc7a37b567?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+  "https://images.unsplash.com/photo-1484100356142-db6ab6244067?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1067&q=80",
+  "https://images.unsplash.com/photo-1525954294489-85bb0c9d2369?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+  "https://images.unsplash.com/photo-1523995669073-7f16bd0e82f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80",
+  "https://images.unsplash.com/photo-1560165427-318ff4b78a0b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80",
+  "https://images.unsplash.com/photo-1556529260-2c56d89db68c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80",
+  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+];
 
 // function renderLoginForm() {
 //     const fields = [
