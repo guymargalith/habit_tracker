@@ -23,6 +23,10 @@ h1{
     margin-top: 10rem;
 }
 
+.h1-habits{ 
+    margin-top: 2rem;
+}
+
 button{
     margin-top: 2rem;
 }
@@ -68,7 +72,7 @@ margin-top: 1.58rem;
 }
 
 .streak{
-    margin-left: 300px;
+    margin-left: 100px;
     margin-top: 30px;
     font-size: 24px;
 }
@@ -79,5 +83,13 @@ input{
     width: 30px;
     height: 30px;
     margin-top: 22px;
+}
 
+.form-control{ 
+    display: inline-block;
+    width: 40%;
+}
+
+.left-margin{ 
+    margin: 3rem;
 }

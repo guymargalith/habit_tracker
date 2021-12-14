@@ -18,17 +18,22 @@ window.addEventListener('load', updateMain)
 function updateMain(){
     const path = window.location.hash
     mainSection.innerHTML ='';
-    switch (path){
-    case '':
-        renderHomepage(); break;
-    case '#':
-        renderHomepage(); break;
-    case '#login':
-        renderLoginForm(); break;
-    case '#register':
-        renderRegisterForm(); break;
-    case '#user-habits':
-        renderUserHabitsPage();break;
+    if(localStorage.getItem('token')){
+        // window.location.hash = '#user-habits'
+        renderUserHabitsPage();
+    } else {
+        switch (path){
+        case '':
+            renderHomepage(); break;
+        case '#':
+            renderHomepage(); break;
+        case '#login':
+            renderLoginForm(); break;
+        case '#register':
+            renderRegisterForm(); break;
+        case '#user-habits':
+            window.location.hash = ''; break;
+        }
     }
 }
 

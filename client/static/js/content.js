@@ -107,14 +107,18 @@ async function renderUserHabitsPage(){
     const userSecondTitle = document.createElement('h4');
     const habitButton = createAddHabitButton();
     const habitForm = createAddHabbitForm();
+    const logOutButton = createAddLogOutButton();
+    userHabitTitle.classList ="h1-habits";
     habitForm.style.display = 'none';
     userHabitTitle.textContent = "TRACKIT"
     userSecondTitle.textContent = await getMotivationalQuote();
+    mainSection.appendChild(logOutButton)
     mainSection.appendChild(userHabitTitle);
     mainSection.appendChild(userSecondTitle);
     mainSection.appendChild(habitButton);
     mainSection.appendChild(habitForm);
-    habitButton.addEventListener("click", e => showHabitForm(habitForm))
+    habitButton.addEventListener('click', e => showHabitForm(habitForm))
+    logOutButton.addEventListener('click', logout)
     const data = await getHabitsByUserId(localStorage.getItem('id'))
     // const data = await getHabitsByUserId(1)
     console.log(data)
@@ -174,6 +178,13 @@ function createAddHabitButton(){
     return habitButton;
 }
 
+function createAddLogOutButton(){
+    const logOutButton = document.createElement('button');
+    logOutButton.textContent = "Log Out";
+    logOutButton.classList = 'btn btn-lg btn-danger button-width d-flex justify-content-center left-margin'
+    return logOutButton;
+}
+
 
 function createAddHabbitForm(){
     const fields = [
@@ -196,12 +207,15 @@ function createAddHabbitForm(){
             form.appendChild(field);
         })
     })
-    form.classList ="py-3 text-center mx-auto row g-3"
+    form.classList ="py-5 text-center mx-auto row g-3"
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         let form = e.target
         const newHabit = await createNewHabit(form.habit.value, form.frequency.value)
         buildCards(newHabit)
+        form.style.display = 'none';
+        form.habit.value = "";
+        form.frequency.value = "";
     })
     return form
 }
