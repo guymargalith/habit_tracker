@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Antic&family=Balsamiq+Sans:wght@700&family=Cabin&family=Dancing+Script:wght@400;500;700&family=Lato:wght@300;400&family=Montserrat:wght@300;400&family=Varela+Round&display=swap');
+
+
+
+body{
+    /* background:url('https://images.unsplash.com/photo-1508558936510-0af1e3cccbab?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80') */
+    /* no-repeat center center fixed;  */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: 'Varela Round', sans-serif;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    text-align: center;
+}
+
+h1{
+    font-size:5rem;
+    margin-top: 10rem;
+}
+
+button{
+    margin-top: 2rem;
+}
+
+#main-section{
+    background:transparent;
+}
+
+.input-spacing{
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.button-width{
+    width:10rem;
+}
+
+.big{
+    top: 2rem;
+      width: 3rem;
+      height: 3rem;
+    }
+
+.card{
+    background-color: rgb(104, 198, 230);
+    margin-left: 3rem;
+    margin-right: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card-header{
+    font-size: 2rem;
+}
+
+.card-title{
+    margin-right: 10rem;
+}
+
+
+.dateTopping{
+margin-top: 1.58rem;
+}
+
+.streak{
+    margin-left: 300px;
+    margin-top: 30px;
+    font-size: 24px;
+}
+
+input{
+    margin-right: 0.5rem;
+    margin-left: 3rem;
+    width: 30px;
+    height: 30px;
+    margin-top: 22px;
+
+}
