@@ -172,11 +172,22 @@ async function buildCards(habit){
     
     checkboxArea.appendChild(dateCheckbox);
     }
-
+    const deleteButton =  createDeleteButton();
     checkboxArea.classList = 'd-flex card-body';
-    checkboxArea.append(streakTitle)
+    checkboxArea.appendChild(streakTitle)
+    checkboxArea.appendChild(deleteButton)
     card.appendChild(checkboxArea);
-    mainSection.appendChild(card) 
+    mainSection.appendChild(card);
+    deleteButton.addEventListener('click', (e)=>{
+        if(confirm("Are you sure you would like to delete this habit?")){
+            deleteHabit(habit.id)
+            card.remove();
+        }
+        })  
+}
+
+function deleteHabitCard(card){
+    
 }
 
 function createAddHabitButton(){
@@ -199,6 +210,13 @@ function createBackButton(){
     backButton.textContent = "Back";
     backButton.classList = 'btn btn-lg btn-danger button-width d-flex justify-content-center left-margin'
     return backButton;
+}
+
+function createDeleteButton(){
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = "Delete Habit";
+    deleteButton.classList = 'btn btn-lg btn-danger button-width d-flex justify-content-center left-margin'
+    return deleteButton;
 }
 
 
