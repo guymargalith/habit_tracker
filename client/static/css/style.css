@@ -93,3 +93,13 @@ input{
 .left-margin{ 
     margin: 3rem;
 }
+
+.button-stack{ 
+    display:block;
+    margin-top: 0rem;
+}
+
+.button-stack button {
+    margin-top: 0rem;
+    margin-bottom: 4px;
+}
