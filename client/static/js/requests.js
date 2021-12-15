@@ -78,6 +78,14 @@ async function createNewHabit(habit, frequency){
     const data = await result.json()
     return data
 }
+
+async function deleteHabit(habitId) {
+    const options = {
+        method: 'DELETE',
+        headers: new Headers({'Authorization': localStorage.getItem('token')}),
+    }
+    const result = await fetch(`http://localhost:3000/habits/${habitId}`, options)
+}
 // async function getAllPosts(){
 //     try {
 //         const options = {
