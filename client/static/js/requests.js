@@ -86,6 +86,17 @@ async function deleteHabit(habitId) {
     }
     const result = await fetch(`http://localhost:3000/habits/${habitId}`, options)
 }
+
+async function editHabit(id, habit, frequency) {
+    const options = {
+        method: 'PATCH',
+        headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
+        body: JSON.stringify({name: habit, frequency: frequency, id: id})
+    }
+    const result = await fetch(`http://localhost:3000/habits`, options)
+    const data = await result.json()
+    return data
+}
 // async function getAllPosts(){
 //     try {
 //         const options = {

@@ -137,18 +137,29 @@ async function renderUserHabitsPage(){
 
 async function buildCards(habit){
     let card = document.createElement("div");
-    card.classList = 'card';
-    card.setAttribute("value", habit.id); 
     let cardTitle = document.createElement('div')
-    cardTitle.classList = 'card-header text-center';
-    cardTitle.textContent = habit.name;
     let checkboxArea = document.createElement('div')
     const streakTitle = await getStreakInfo(habit.id);
+    const logsRaw = await getWeeklyLogs(habit.id)
+    const logs = logsRaw.map(r => r.date)
+    const editHabitForm = createEditHabbitForm();
+    editHabitForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        let form = e.target
+        const editHabitAction = await editHabit( habit.id, form.habit.value, form.frequency.value)
+        form.style.display = 'none';
+        form.habit.value = "";
+        form.frequency.value = "";
+    })
+    const buttonStack = createButtonStack(habit, card,editHabitForm)
+    editHabitForm.style.display = 'none';
+    card.classList = 'card';
+    cardTitle.classList = 'card-header text-center';
+    card.setAttribute("value", habit.id); 
+    cardTitle.textContent = habit.name;
     streakTitle.classList = 'streak';
     streakTitle.setAttribute('habit-id', habit.id)
     card.appendChild(cardTitle);
-    const logsRaw = await getWeeklyLogs(habit.id)
-    const logs = logsRaw.map(r => r.date)
     console.log(logs)
     for(let i =1; i <= 7; i++){
     let checkbox = document.createElement('input')
@@ -172,23 +183,15 @@ async function buildCards(habit){
     
     checkboxArea.appendChild(dateCheckbox);
     }
-    const deleteButton =  createDeleteButton();
     checkboxArea.classList = 'd-flex card-body';
     checkboxArea.appendChild(streakTitle)
-    checkboxArea.appendChild(deleteButton)
+    checkboxArea.appendChild(buttonStack)
     card.appendChild(checkboxArea);
+    card.appendChild(editHabitForm);
     mainSection.appendChild(card);
-    deleteButton.addEventListener('click', (e)=>{
-        if(confirm("Are you sure you would like to delete this habit?")){
-            deleteHabit(habit.id)
-            card.remove();
-        }
-        })  
-}
-
-function deleteHabitCard(card){
     
 }
+
 
 function createAddHabitButton(){
     const habitButton = document.createElement('button');
@@ -215,10 +218,32 @@ function createBackButton(){
 function createDeleteButton(){
     const deleteButton = document.createElement('button');
     deleteButton.textContent = "Delete Habit";
-    deleteButton.classList = 'btn btn-lg btn-danger button-width d-flex justify-content-center left-margin'
+    deleteButton.classList = 'btn btn-md btn-danger button-width d-flex justify-content-center left-margin'
     return deleteButton;
 }
 
+function createEditHabitButton(){
+    const editButton = document.createElement('button');
+    editButton.textContent = "Edit Habit";
+    editButton.classList = 'btn btn-md btn-danger button-width d-flex justify-content-center left-margin'
+    return editButton;
+}
+
+function createButtonStack(habit, card, habitForm){
+    const buttonStack = document.createElement('div');
+    buttonStack.classList = 'button-stack';
+    const editButton = createEditHabitButton()
+    const deleteButton = createDeleteButton()
+    buttonStack.appendChild(editButton);
+    buttonStack.appendChild(deleteButton);
+    editButton.addEventListener('click', (e)=> showEditHabitForm(habitForm))
+    deleteButton.addEventListener('click', (e)=>
+    {  if(confirm("Are you sure you would like to delete this habit?")){
+        deleteHabit(habit.id)
+        card.remove();
+    }})
+    return buttonStack;
+}
 
 function createAddHabbitForm(){
     const fields = [
@@ -253,6 +278,31 @@ function createAddHabbitForm(){
         form.habit.value = "";
         form.frequency.value = "";
     })
+    return form
+}
+
+function createEditHabbitForm(){
+    const fields = [
+        { tag: 'input', attributes: { type: 'text', name: 'habit', placeholder: 'Habit name', required: 'required' } },
+        { tag: 'input', attributes: { type: 'text', name: 'frequency', placeholder: 'Frequency', required: 'required' } },
+        { tag: 'button', attributes: { type: 'submit', value: 'Submit' } }
+    ]
+    const form = document.createElement('form');
+    fields.forEach(f => {
+        let field = document.createElement(f.tag);
+        Object.entries(f.attributes).forEach(([a, v]) => {
+            field.setAttribute(a, v);
+            if(field.name === 'habit' || field.name === 'frequency'){
+                field.classList = 'form-control col input-spacing';
+            }
+            else{
+                field.textContent = "Submit"
+                field.classList = 'btn btn-md btn-danger button-width'
+            }
+            form.appendChild(field);
+        })
+    })
+    form.classList ="text-center mx-auto row g-3"
     return form
 }
 
@@ -297,6 +347,17 @@ function showHabitForm(form){
         form.style.display = 'none';
         form.habit.value = "";
         form.frequency.value = "";
+    }
+    
+}
+
+function showEditHabitForm(form){
+    console.log("clicked")
+    if(form.style.display == "none"){
+        form.style.display = "block"
+    }
+    else{
+        form.style.display = "none"
     }
     
 }
@@ -381,74 +442,9 @@ const images =[
 
 ]
 
-// function renderLoginForm() {
-//     const fields = [
-//         { tag: 'input', attributes: { type: 'email', name: 'email', placeholder: 'Email' } },
-//         { tag: 'input', attributes: { type: 'password', name: 'password', placeholder: 'Password' } },
-//         { tag: 'input', attributes: { type: 'submit', value: 'Login' } }
-//     ]
-//     const form = document.createElement('form');
-//     fields.forEach(f => {
-//         let field = document.createElement(f.tag);
-//         Object.entries(f.attributes).forEach(([a, v]) => {
-//             field.setAttribute(a, v);
-//             form.appendChild(field);
-//         })
-//     })
-//     form.addEventListener('submit', requestLogin)
-//     main.appendChild(form);
-// }
-
-// function renderRegisterForm() {
-//     const fields = [
-//         { tag: 'input', attributes: { type: 'text', name: 'username', placeholder: 'Username' } },
-//         { tag: 'input', attributes: { type: 'email', name: 'email', placeholder: 'Email' } },
-//         { tag: 'input', attributes: { type: 'password', name: 'password', placeholder: 'Password' } },
-//         { tag: 'input', attributes: { type: 'password', name: 'passwordConfirmation', placeholder: 'Confirm Password' } },
-//         { tag: 'input', attributes: { type: 'submit', value: 'Create Account' } }
-//     ]
-//     const form = document.createElement('form');
-//     fields.forEach(f => {
-//         let field = document.createElement(f.tag);
-//         Object.entries(f.attributes).forEach(([a, v]) => {
-//             field.setAttribute(a, v);
-//             form.appendChild(field);
-//         })
-//     })
-//     form.addEventListener('submit', requestRegistration)
-//     main.appendChild(form);
-// }
-
-// async function renderFeed() {
-//     const feed = document.createElement('section');
-//     feed.id = 'feed';
-//     const posts = await getAllPosts();
-//     if(posts.err){return}
-//     const renderPost = postData => {
-//         const post = document.createElement('div');
-//         post.className = 'post';
-//         const user = document.createElement('h3');
-//         const body = document.createElement('p');
-//         user.textContent = postData.username;
-//         body.textContent = postData.body;
-//         post.appendChild(user);
-//         post.appendChild(body);
-//         feed.appendChild(post);
-//     }
-//     posts.forEach(renderPost);
-//     main.appendChild(feed);
-// }
-
-// function renderProfile() {
-//     const profile = document.createElement('section');
-//     const greeting = document.createElement('h3');
-//     greeting.textContent = `Hi there, ${localStorage.getItem('username')}!`;
-//     profile.appendChild(greeting);
-//     main.appendChild(profile);
-// }
-
-// function render404() {
-//     const error = document.createElement('h2');
-//     error.textContent = "Oops, we can't find that page sorry!";
-//     main.appendChild(error);
-// }
+function render404() {
+    document.body.background = changeBackgroundImage()
+    const error = document.createElement('h2');
+    error.textContent = "Oops, we can't find that page sorry!";
+    main.appendChild(error);
+}
