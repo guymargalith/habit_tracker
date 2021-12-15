@@ -31,6 +31,8 @@ async function renderHomepage(){
 
 function renderLoginForm(){
     document.body.background = changeBackgroundImage()
+    const backButton = createBackButton();
+    backButton.addEventListener('click',e => window.location.hash = '')
     const title = document.createElement('h1')
     const secondTitle = document.createElement('h4')
     title.className = "px-5 py-3 text-center";
@@ -38,8 +40,8 @@ function renderLoginForm(){
     title.textContent = 'Login'
     secondTitle.textContent = 'Every Journey Begins With a Single Step';
     const fields = [
-                { tag: 'input', attributes: { type: 'username', name: 'username', placeholder: 'Username' } },
-                { tag: 'input', attributes: { type: 'password', name: 'password', placeholder: 'Password' } },
+                { tag: 'input', attributes: { type: 'username', name: 'username', placeholder: 'Username', required: 'required'} },
+                { tag: 'input', attributes: { type: 'password', name: 'password', placeholder: 'Password', required: 'required' } },
                 { tag: 'button', attributes: { type: 'submit', value: 'Login' } }
             ]
             const form = document.createElement('form');
@@ -58,6 +60,7 @@ function renderLoginForm(){
                 })
             })
             form.classList ="px-5 py-3 text-center mx-auto row g-3"
+            mainSection.appendChild(backButton)
             mainSection.appendChild(title)
             mainSection.appendChild(secondTitle)
             mainSection.appendChild(form);
@@ -68,22 +71,26 @@ function renderRegisterForm(){
     document.body.background = changeBackgroundImage()
     const title = document.createElement('h1')
     const secondTitle = document.createElement('h4')
+    const backButton = createBackButton();
+    backButton.addEventListener('click',e => window.location.hash = '')
     title.className = "px-5 py-3 text-center";
     secondTitle.className = "px-5 py-3 text-center";
     title.textContent = 'Register'
     secondTitle.textContent = 'Did You Ever Hear About The Orange Headed Man';
     const fields = [
-                { tag: 'input', attributes: { type: 'username', name: 'username', placeholder: 'Username' } },
-                { tag: 'input', attributes: { type: 'password', name: 'password', placeholder: 'Password' } },
-                { tag: 'input', attributes: { type: 'password', name: 'confirm-password', placeholder: 'Confirm Password' } },
+                { tag: 'input', attributes: { type: 'username', name: 'username', placeholder: 'Username', required: 'required'} },
+                { tag: 'input', attributes: { type: 'password', name: 'password', placeholder: 'Password', required: 'required' } },
+                { tag: 'input', attributes: { type: 'password', name: 'confirmPassword', placeholder: 'Confirm Password', required: 'required' } },
                 { tag: 'button', attributes: { type: 'submit', value: 'Login' } }
             ]
             const form = document.createElement('form');
+            
             fields.forEach(f => {
                 let field = document.createElement(f.tag);
                 Object.entries(f.attributes).forEach(([a, v]) => {
                     field.setAttribute(a, v);
-                    if(field.name === 'username' || field.name === 'password' || field.name === 'confirm-password'){
+                    
+                    if(field.name === 'username' || field.name === 'password' || field.name === 'confirmPassword'){
                         field.classList = 'form-control col input-spacing';
                     }
                     else{
@@ -94,10 +101,11 @@ function renderRegisterForm(){
                 })
             })
             form.classList ="px-5 py-3 text-center mx-auto row g-3"
+            mainSection.appendChild(backButton)
             mainSection.appendChild(title)
             mainSection.appendChild(secondTitle)
             mainSection.appendChild(form);
-            form.addEventListener("submit", requestRegistration)
+            form.addEventListener("submit", checkPasswords)
 }
 
 
@@ -107,14 +115,18 @@ async function renderUserHabitsPage(){
     const userSecondTitle = document.createElement('h4');
     const habitButton = createAddHabitButton();
     const habitForm = createAddHabbitForm();
+    const logOutButton = createAddLogOutButton();
+    userHabitTitle.classList ="h1-habits";
     habitForm.style.display = 'none';
     userHabitTitle.textContent = "TRACKIT"
     userSecondTitle.textContent = await getMotivationalQuote();
+    mainSection.appendChild(logOutButton)
     mainSection.appendChild(userHabitTitle);
     mainSection.appendChild(userSecondTitle);
     mainSection.appendChild(habitButton);
     mainSection.appendChild(habitForm);
-    habitButton.addEventListener("click", e => showHabitForm(habitForm))
+    habitButton.addEventListener('click', e => showHabitForm(habitForm))
+    logOutButton.addEventListener('click', logout)
     const data = await getHabitsByUserId(localStorage.getItem('id'))
     // const data = await getHabitsByUserId(1)
     console.log(data)
@@ -160,25 +172,58 @@ async function buildCards(habit){
     
     checkboxArea.appendChild(dateCheckbox);
     }
-
+    const deleteButton =  createDeleteButton();
     checkboxArea.classList = 'd-flex card-body';
-    checkboxArea.append(streakTitle)
+    checkboxArea.appendChild(streakTitle)
+    checkboxArea.appendChild(deleteButton)
     card.appendChild(checkboxArea);
-    mainSection.appendChild(card) 
+    mainSection.appendChild(card);
+    deleteButton.addEventListener('click', (e)=>{
+        if(confirm("Are you sure you would like to delete this habit?")){
+            deleteHabit(habit.id)
+            card.remove();
+        }
+        })  
+}
+
+function deleteHabitCard(card){
+    
 }
 
 function createAddHabitButton(){
     const habitButton = document.createElement('button');
+    habitButton.id = 'habit-btn'
     habitButton.textContent = "Add Habit";
     habitButton.classList = 'btn btn-lg btn-danger button-width'
     return habitButton;
 }
 
+function createAddLogOutButton(){
+    const logOutButton = document.createElement('button');
+    logOutButton.textContent = "Log Out";
+    logOutButton.classList = 'btn btn-lg btn-danger button-width d-flex justify-content-center left-margin'
+    return logOutButton;
+}
+
+function createBackButton(){
+    const backButton = document.createElement('button');
+    backButton.textContent = "Back";
+    backButton.classList = 'btn btn-lg btn-danger button-width d-flex justify-content-center left-margin'
+    return backButton;
+}
+
+function createDeleteButton(){
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = "Delete Habit";
+    deleteButton.classList = 'btn btn-lg btn-danger button-width d-flex justify-content-center left-margin'
+    return deleteButton;
+}
+
 
 function createAddHabbitForm(){
     const fields = [
-        { tag: 'input', attributes: { type: 'text', name: 'habit', placeholder: 'Habit Name' } },
-        { tag: 'input', attributes: { type: 'text', name: 'frequency', placeholder: 'How Often Do You Want To Do This Per Week?' } },
+        { tag: 'input', attributes: { type: 'text', name: 'habit', placeholder: 'Habit Name', required: 'required' } },
+        { tag: 'input', attributes: { type: 'text', name: 'frequency', placeholder: 'How Often Do You Want To Do This Per Week?', required: 'required' } },
         { tag: 'button', attributes: { type: 'submit', value: 'Submit' } }
     ]
     const form = document.createElement('form');
@@ -196,25 +241,62 @@ function createAddHabbitForm(){
             form.appendChild(field);
         })
     })
-    form.classList ="py-3 text-center mx-auto row g-3"
+    form.classList ="py-5 text-center mx-auto row g-3"
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         let form = e.target
         const newHabit = await createNewHabit(form.habit.value, form.frequency.value)
+        let habitButton = document.querySelector('#habit-btn')
+        habitButton.textContent = "Add Habit"
         buildCards(newHabit)
+        form.style.display = 'none';
+        form.habit.value = "";
+        form.frequency.value = "";
     })
     return form
 }
 
+async function checkLogin(e) {
+    e.preventDefault();
+    try{
+        await requestLogin(e);
+    } catch(err){
+        console.log("Here")
+        const errorMessage = document.createElement("div");
+        errorMessage.textContent = "Your information does not match any on records";
+        errorMessage.style.color = "white";
+        mainSection.appendChild(errorMessage);
+    } 
+    
+  }
 
+async function checkPasswords(e) {
+    e.preventDefault();
+    let password = e.target.password.value;
+    let confirmedPassword = e.target.confirmPassword.value;
+    if (password != confirmedPassword) {
+      const errorMessage = document.createElement("div");
+      errorMessage.textContent = "Please make sure your passwords match";
+      errorMessage.style.color = "white";
+      mainSection.appendChild(errorMessage);
+    } else {
+      await requestRegistration(e);
+    }
+  }
 
 function showHabitForm(form){
     console.log("clicked")
+    let habitButton = document.querySelector('#habit-btn')
     if(form.style.display == "none"){
         form.style.display = "block"
+        habitButton.textContent = "X"
     }
     else{
         form.style.display = "none"
+        habitButton.textContent = "Add Habit"
+        form.style.display = 'none';
+        form.habit.value = "";
+        form.frequency.value = "";
     }
     
 }
