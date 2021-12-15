@@ -163,6 +163,7 @@ class Habit {
           if (frequencyCurrentWeek >= this.frequency) {
             streak = streak + 1;
           }
+          console.log('streak is', streak)
           res(streak);
         }
       } catch (err) {

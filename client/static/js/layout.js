@@ -33,10 +33,11 @@ function updateMain(){
             renderRegisterForm(); break;
         case '#user-habits':
             window.location.hash = ''; break;
-        }
+        default: 
+            render404(); break;
     }
 }
-
+}
 
 // function updateMain(){
 //     const path = window.location.hash
@@ -97,5 +98,4 @@ function updateMain(){
 //     }
 // }
 
-// updateContent();
-
+// updateContent()
