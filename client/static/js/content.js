@@ -179,10 +179,14 @@ async function buildCards(habit){
     card.appendChild(checkboxArea);
     mainSection.appendChild(card);
     deleteButton.addEventListener('click', (e)=>{
-        deleteHabit(habit.id)
-        mainSection.innerHTML ='';
-        renderUserHabitsPage()})
+        if(confirm("Are you sure you would like to delete this habit?")){
+            deleteHabit(habit.id)
+            card.remove();
+        }
+        })  
+}
 
+function deleteHabitCard(card){
     
 }
 
