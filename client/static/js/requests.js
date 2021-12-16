@@ -1,3 +1,4 @@
+
 async function getHabits(){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
@@ -27,6 +28,7 @@ async function getHabitsByUserId(id){
     // const habits = data.map(d =>d.name)
     return data
 }
+
 
 async function getStreak(id){
     const options = {
@@ -86,24 +88,31 @@ async function deleteHabit(habitId) {
     }
     const result = await fetch(`http://localhost:3000/habits/${habitId}`, options)
 }
-// async function getAllPosts(){
-//     try {
-//         const options = {
-//             headers: new Headers({'Authorization': localStorage.getItem('token')}),
-//         }
-//         const response = await fetch('http://localhost:3000/posts', options);
-//         const data = await response.json();
-//         if(data.err){
-//             console.warn(data.err);
-//             logout();
-//         }
-//         return data;
-//     } catch (err) {
-//         console.warn(err);
-//     }
-// }
+
+async function editHabit(id, habit, frequency) {
+    const options = {
+        method: 'PATCH',
+        headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
+        body: JSON.stringify({name: habit, frequency: frequency, id: id})
+    }
+    const result = await fetch(`http://localhost:3000/habits`, options)
+    const data = await result.json()
+    console.log(data)
+    return data
+}
 
 
-// getHabits()
-// getUsers()
+module.exports = { 
+    getHabits,
+    getHabitsByUserId,
+    getUsers,
+    getStreak,
+    getWeeklyLogs,
+    createLog,
+    deleteLog,
+    createNewHabit,
+    deleteHabit,
+    editHabit
+}
+
 
