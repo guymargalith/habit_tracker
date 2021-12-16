@@ -1,3 +1,4 @@
+const {renderHomepage, renderLoginForm, renderRegisterForm, renderUserHabitsPage, buildCards, checkLogin, checkPasswords } = require('./content.js')
 async function requestLogin(e){
     e.preventDefault();
     try {
@@ -71,7 +72,5 @@ function logout(){
     window.location.hash = '#';
 }
 
-// function currentUser(){
-//     const username = localStorage.getItem('username')
-//     return username;
-// }
+
+module.exports = { requestLogin, requestRegistration, logout};
