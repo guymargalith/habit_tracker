@@ -24,20 +24,20 @@ describe('User', () => {
             let userData = { id: 1, username: 'Test Name' }
             jest.spyOn(db, 'query')
                 .mockResolvedValueOnce({rows: [ userData] });
-            const result = await User.findByID(1);
-            expect(result).toBeInstanceOf(User)
-        })
-    });
-
-    describe('findById', () => {
-        test('it finds user by username', async () => {
-            let userData = { id: 1, username: 'Test Name' }
-            jest.spyOn(db, 'query')
-                .mockResolvedValueOnce({rows: [ userData] });
             const result = await User.findByUsername('Test Name');
             expect(result).toBeInstanceOf(User)
         })
     });
+
+    // describe('findById', () => {
+    //     test('it finds user by username', async () => {
+    //         let userData = { id: 1, username: 'Test Name' }
+    //         jest.spyOn(db, 'query')
+    //             .mockResolvedValueOnce({rows: [ userData] });
+    //         const result = await User.findByUsername('Test Name');
+    //         expect(result).toBeInstanceOf(User)
+    //     })
+    // });
 
     
     describe('create', () => {

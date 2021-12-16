@@ -103,9 +103,9 @@ class Habit {
         const logs = await this.findAllLogs;
         // console.log(logs)
         const logLength = logs.length;
-        // let startDate = new Date(new Date().toDateString()).getTime();
-        // startDate = startDate/1000
-        let startDate = 1639353600;
+        let startDate = new Date(new Date().toDateString()).getTime();
+        startDate = startDate/1000
+        // let startDate = 1639353600;
         // console.log(startDate)
         if (logLength < this.frequency) {
           res(0);

@@ -44,17 +44,17 @@ class User {
         })
     }
 
-    static findByID(id){
-        return new Promise(async (res, rej) => {
-            try {
-                let result = await db.query("SELECT * FROM users WHERE id = $1;", [id]);
-                let user = new User(result.rows[0])
-                res(user)
-            } catch (err) {
-                rej(`Error retrieving user: ${err}`)
-            }
-        })
-    }
+    // static findByID(id){
+    //     return new Promise(async (res, rej) => {
+    //         try {
+    //             let result = await db.query("SELECT * FROM users WHERE id = $1;", [id]);
+    //             let user = new User(result.rows[0])
+    //             res(user)
+    //         } catch (err) {
+    //             rej(`Error retrieving user: ${err}`)
+    //         }
+    //     })
+    // }
 
     // get allHabits() {
     //     return new Promise(async (res, rej) => {

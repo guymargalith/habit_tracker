@@ -38,16 +38,16 @@ describe('Log', () => {
         })
     });
     
-    // describe('destroy', () => {
-    //     test('it resolves with message on successful db query', async () => {
-    //         let logData = { id: 1, name: 'New Log' }
-    //         jest.spyOn(db, 'query')
-    //             .mockResolvedValueOnce({ id: 1, name: 'New Log' });
-    //         let testLog = new Log({ logData })
-    //         const result = await testLog.destroy();
-    //         expect(result).toBe('Log 1 was deleted')
-    //     })
-    // });
+    describe('destroy', () => {
+        test('it resolves with message on successful db query', async () => {
+            let logData = { id: 1, name: 'New Log' }
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({ id: 1, name: 'New Log' });
+            let testLog = new Log({ logData })
+            const result = await testLog.destroy();
+            expect(result).toBe('Log was deleted')
+        })
+    });
     
     
 })

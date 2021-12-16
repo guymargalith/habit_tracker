@@ -3,7 +3,7 @@ services:
   api:
     container_name: habit_test_api
     ports:
-      - 3000:3000
+      - 5001:5001
     environment: 
       - PGUSER=guymargalith
       - PGHOST=db
@@ -21,7 +21,7 @@ services:
     volumes:
       - "test_db:/var/lib/postgresql/data"
     environment: 
-      - POSTGRES_DB=abit_tracker_test
+      - POSTGRES_DB=habit_tracker_test
       - POSTGRES_USER=guymargalith
       - POSTGRES_PASSWORD=password
 volumes:
