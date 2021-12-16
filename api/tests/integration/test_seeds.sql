@@ -2,14 +2,14 @@ TRUNCATE users, habits, logs RESTART IDENTITY;
 
 INSERT INTO users (username, password_digest) 
 VALUES
-('Test User 1', 'Test password 1'),
-('Test User 2', 'Test password 2');
+('Test User 1', 'Testpassword1'),
+('Test User 2', 'Testpassword2');
 
 INSERT INTO habits (name, frequency, user_id) 
 VALUES
 (
     'Test Habit 1', 
-    2, 
+    7, 
     1
     
 ),
@@ -21,5 +21,5 @@ VALUES
 
 INSERT INTO logs (date, habit_id)
 VALUES
-(2021-12-12, 1),
-(2021-12-13, 2);
+(1639267200, 1),
+(1639267200, 2);

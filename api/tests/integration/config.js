@@ -20,4 +20,4 @@ const resetTestDB = () => {
 global.request = request;
 global.app = app;
 global.resetTestDB = resetTestDB;
-global.port = process.env.PORT || 5000;
+global.port = process.env.PORT || 5001;
