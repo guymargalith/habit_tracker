@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "bundle": "watchify ./static/js/layout.js -o bundle.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +17,8 @@
     "coverage": "^0.4.1",
     "jest": "^27.4.5",
     "jest-fetch-mock": "^3.0.3"
+  },
+  "devDependencies": {
+    "watchify": "^4.0.0"
   }
 }

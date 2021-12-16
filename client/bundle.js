@@ -1,5 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const {renderHomepage, renderLoginForm, renderRegisterForm, renderUserHabitsPage, buildCards, checkLogin, checkPasswords } = require('./content.js')
+const mainSection = document.querySelector("#main-section");
+
 async function requestLogin(e){
     e.preventDefault();
     try {
@@ -9,7 +11,7 @@ async function requestLogin(e){
             body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
         }
         console.log(options)
-        const r = await fetch(`http://localhost:3000/auth/login`, options)
+        const r = await fetch(`https://habit-tracker-sleighers.herokuapp.com/auth/login`, options)
         const data = await r.json()
         if (!data.success) { throw new Error('Login not authorised'); }
         login(data.token);
@@ -33,7 +35,7 @@ async function requestRegistration(e) {
             body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
         }
         console.log(options)
-        const r = await fetch(`http://localhost:3000/auth/register`, options)
+        const r = await fetch(`https://habit-tracker-sleighers.herokuapp.com/auth/register`, options)
         const data = await r.json()
         if (data.err){ throw Error(data.err) }
         requestLogin(e);
@@ -596,7 +598,7 @@ async function getHabits(){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch("http://localhost:3000/habits", options)
+    const result = await fetch("https://habit-tracker-sleighers.herokuapp.com/habits", options)
     const data = result.json();
     console.log(data)
 }
@@ -606,7 +608,7 @@ async function getUsers(){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token'),}),
     }
-    const result = await fetch("http://localhost:3000/users", options)
+    const result = await fetch("https://habit-tracker-sleighers.herokuapp.com/users", options)
     const data = result.json();
     console.log(data)
 }
@@ -616,7 +618,7 @@ async function getHabitsByUserId(id){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch(`http://localhost:3000/habits/specific/${id}`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits/specific/${id}`, options)
     const data = await result.json();
     // const habits = data.map(d =>d.name)
     return data
@@ -627,7 +629,7 @@ async function getStreak(id){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch(`http://localhost:3000/habits/${id}/streak`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits/${id}/streak`, options)
     const data = await result.json();
     return data.streak; 
 
@@ -637,7 +639,7 @@ async function getWeeklyLogs(id){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch(`http://localhost:3000/habits/${id}/weekly`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits/${id}/weekly`, options)
     const data = await result.json();
     console.log(data)
     return data.logs; 
@@ -649,7 +651,7 @@ async function createLog(habitId, date){
         headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
         body: JSON.stringify({habitId: habitId, date: date})
     }
-    const result = await fetch(`http://localhost:3000/logs`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/logs`, options)
     const data = await result.json()
     return data
 }
@@ -659,7 +661,7 @@ async function deleteLog(logId){
         method: 'DELETE',
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    await fetch(`http://localhost:3000/logs/${logId}`, options)
+    await fetch(`https://habit-tracker-sleighers.herokuapp.com/logs/${logId}`, options)
 }
 
 
@@ -669,7 +671,7 @@ async function createNewHabit(habit, frequency){
         headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
         body: JSON.stringify({name: habit, frequency: frequency, userId: localStorage.getItem('id')})
     }
-    const result = await fetch(`http://localhost:3000/habits`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits`, options)
     const data = await result.json()
     return data
 }
@@ -679,7 +681,7 @@ async function deleteHabit(habitId) {
         method: 'DELETE',
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch(`http://localhost:3000/habits/${habitId}`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits/${habitId}`, options)
 }
 
 async function editHabit(id, habit, frequency) {
@@ -688,7 +690,7 @@ async function editHabit(id, habit, frequency) {
         headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
         body: JSON.stringify({name: habit, frequency: frequency, id: id})
     }
-    const result = await fetch(`http://localhost:3000/habits`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits`, options)
     const data = await result.json()
     console.log(data)
     return data
