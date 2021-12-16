@@ -23,7 +23,7 @@ router.post('/login', async (req, res) => {
     try {
         const user = await User.findByUsername(req.body.username)
         if(!user){ throw new Error('No user with this username') }
-        const authed = bcrypt.compare(req.body.password, user.passwordDigest)
+        const authed = await bcrypt.compare(req.body.password, user.passwordDigest)
         console.log(authed)
         if (!!authed){
             const payload = { id: user.id, username: user.username}
