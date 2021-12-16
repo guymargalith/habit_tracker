@@ -28,6 +28,30 @@ describe('Habit', () => {
         })
     });
 
+    
+
+    describe('destroy', () => {
+        test('it resolves with message on successful db query', async () => {
+            let habitData = { id: 1, name: 'New Habit' }
+            jest.spyOn(db, 'query')
+                .mockResolvedValue();
+            let testHabit = new Habit({ habitData })
+            const result = await testHabit.destroy();
+            expect(result).toBe('Habit and respective logs were deleted')
+        })
+    });
+    
+    describe('findAllLogs', () => {
+        test('it finds all logs associated with a habit', async () => {
+            let habitData = { id:1}
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce([123]);
+            let testHabit = new Habit({ habitData })
+            const result = await testHabit.findAllLogs;
+            expect(result).toBeInstanceOf(Array)
+            // expect(result[0]).toBeInstanceOf()
+        })
+    });
     describe('findUserHabits', () => {
         test('it finds a user\'s habits', async () => {
             let habitData = { id: 1, name: 'Test Habit' }

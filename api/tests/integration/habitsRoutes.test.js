@@ -1,16 +1,14 @@
-/ error: app is not defined
-const app = require("../../server");
+// const app = require("../../server");
 describe("habits endpoints", () => {
-  let api = app.listen(5000, () =>
-    console.log("Test server running on port 5000")
-  );
+  let api;
   beforeEach(async () => {
     await resetTestDB();
   });
 
   beforeAll(async () => {
-    api;
-  });
+    api = app.listen(5000, () =>
+    console.log("Test server running on port 5000")
+    )});
 
   afterAll((done) => {
     console.log("Gracefully stopping test server");
@@ -48,4 +46,4 @@ describe("habits endpoints", () => {
     expect(habitRes.statusCode).toEqual(404);
     expect(habitRes.body).toHaveProperty("err");
   });
-});
+  });
