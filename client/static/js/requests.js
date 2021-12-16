@@ -3,7 +3,7 @@ async function getHabits(){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch("http://localhost:3000/habits", options)
+    const result = await fetch("https://habit-tracker-sleighers.herokuapp.com/habits", options)
     const data = result.json();
     console.log(data)
 }
@@ -13,7 +13,7 @@ async function getUsers(){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token'),}),
     }
-    const result = await fetch("http://localhost:3000/users", options)
+    const result = await fetch("https://habit-tracker-sleighers.herokuapp.com/users", options)
     const data = result.json();
     console.log(data)
 }
@@ -23,7 +23,7 @@ async function getHabitsByUserId(id){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch(`http://localhost:3000/habits/specific/${id}`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits/specific/${id}`, options)
     const data = await result.json();
     // const habits = data.map(d =>d.name)
     return data
@@ -34,7 +34,7 @@ async function getStreak(id){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch(`http://localhost:3000/habits/${id}/streak`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits/${id}/streak`, options)
     const data = await result.json();
     return data.streak; 
 
@@ -44,7 +44,7 @@ async function getWeeklyLogs(id){
     const options = {
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch(`http://localhost:3000/habits/${id}/weekly`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits/${id}/weekly`, options)
     const data = await result.json();
     console.log(data)
     return data.logs; 
@@ -56,7 +56,7 @@ async function createLog(habitId, date){
         headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
         body: JSON.stringify({habitId: habitId, date: date})
     }
-    const result = await fetch(`http://localhost:3000/logs`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/logs`, options)
     const data = await result.json()
     return data
 }
@@ -66,7 +66,7 @@ async function deleteLog(logId){
         method: 'DELETE',
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    await fetch(`http://localhost:3000/logs/${logId}`, options)
+    await fetch(`https://habit-tracker-sleighers.herokuapp.com/logs/${logId}`, options)
 }
 
 
@@ -76,7 +76,7 @@ async function createNewHabit(habit, frequency){
         headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
         body: JSON.stringify({name: habit, frequency: frequency, userId: localStorage.getItem('id')})
     }
-    const result = await fetch(`http://localhost:3000/habits`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits`, options)
     const data = await result.json()
     return data
 }
@@ -86,7 +86,7 @@ async function deleteHabit(habitId) {
         method: 'DELETE',
         headers: new Headers({'Authorization': localStorage.getItem('token')}),
     }
-    const result = await fetch(`http://localhost:3000/habits/${habitId}`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits/${habitId}`, options)
 }
 
 async function editHabit(id, habit, frequency) {
@@ -95,7 +95,7 @@ async function editHabit(id, habit, frequency) {
         headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
         body: JSON.stringify({name: habit, frequency: frequency, id: id})
     }
-    const result = await fetch(`http://localhost:3000/habits`, options)
+    const result = await fetch(`https://habit-tracker-sleighers.herokuapp.com/habits`, options)
     const data = await result.json()
     console.log(data)
     return data

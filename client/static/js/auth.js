@@ -1,4 +1,6 @@
 const {renderHomepage, renderLoginForm, renderRegisterForm, renderUserHabitsPage, buildCards, checkLogin, checkPasswords } = require('./content.js')
+const mainSection = document.querySelector("#main-section");
+
 async function requestLogin(e){
     e.preventDefault();
     try {
@@ -8,7 +10,7 @@ async function requestLogin(e){
             body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
         }
         console.log(options)
-        const r = await fetch(`http://localhost:3000/auth/login`, options)
+        const r = await fetch(`https://habit-tracker-sleighers.herokuapp.com/auth/login`, options)
         const data = await r.json()
         if (!data.success) { throw new Error('Login not authorised'); }
         login(data.token);
@@ -32,7 +34,7 @@ async function requestRegistration(e) {
             body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
         }
         console.log(options)
-        const r = await fetch(`http://localhost:3000/auth/register`, options)
+        const r = await fetch(`https://habit-tracker-sleighers.herokuapp.com/auth/register`, options)
         const data = await r.json()
         if (data.err){ throw Error(data.err) }
         requestLogin(e);
