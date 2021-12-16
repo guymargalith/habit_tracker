@@ -138,16 +138,16 @@ function renderLoginForm(){
                 let field = document.createElement(f.tag);
                 Object.entries(f.attributes).forEach(([a, v]) => {
                     field.setAttribute(a, v);
-                    if(field.name === 'username' || field.name === 'password'){
-                        field.classList = 'form-control col input-spacing';
-                    }
-                    else{
-                        field.textContent = "Login"
-                        field.id = 'loginButtonLogin'
-                        field.classList = 'btn btn-lg btn-danger col-md-2'
-                    }
-                    form.appendChild(field);
                 })
+                if(field.name === 'username' || field.name === 'password'){
+                    field.classList = 'form-control col input-spacing';
+                }
+                else{
+                    field.textContent = "Login"
+                    field.id = 'loginButtonLogin'
+                    field.classList = 'btn btn-lg btn-danger col-md-2'
+                }
+                form.appendChild(field);
             })
             form.classList ="px-5 py-3 text-center mx-auto row g-3"
             mainSection.appendChild(backButton)
@@ -181,16 +181,15 @@ function renderRegisterForm(){
                 let field = document.createElement(f.tag);
                 Object.entries(f.attributes).forEach(([a, v]) => {
                     field.setAttribute(a, v);
-                    
-                    if(field.name === 'username' || field.name === 'password' || field.name === 'confirmPassword'){
-                        field.classList = 'form-control col input-spacing';
-                    }
-                    else{
-                        field.textContent = "Register"
-                        field.classList = 'btn btn-lg btn-danger button-width'
-                    }
-                    form.appendChild(field);
                 })
+                if(field.name === 'username' || field.name === 'password' || field.name === 'confirmPassword'){
+                    field.classList = 'form-control col input-spacing';
+                }
+                else{
+                    field.textContent = "Register"
+                    field.classList = 'btn btn-lg btn-danger button-width'
+                }
+                form.appendChild(field);
             })
             form.classList ="px-5 py-3 text-center mx-auto row g-3"
             mainSection.appendChild(backButton)
