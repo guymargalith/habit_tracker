@@ -89,9 +89,9 @@ async function renderHomepage(){
     welcomeSubTitle.id = 'motivationalQuote';
     const buttonArea = document.createElement("div");
     const loginButton = document.createElement("button");
-    loginButton.id = 'loginButton';
+    loginButton.id = 'loginButtonHomepage';
     const registerButton = document.createElement("button");
-    registerButton.id = 'registerButton';
+    registerButton.id = 'registerButtonHomepage';
     const loginAnchorTag = document.createElement("a");
     const registerAnchorTag = document.createElement("a");
     welcomeTitle.textContent = "TRACKIT";
@@ -272,14 +272,15 @@ async function buildCards(habit){
     }
     checkbox.addEventListener('change', logManage)
     checkboxArea.appendChild(checkbox);
-    
+    let dateCheckbox = document.createElement('p');
+    dateCheckbox.textContent = `${getDay(i)}`;
     if(i === 7){
         checkbox.classList = 'big';
+        dateCheckbox.classList = 'big dateTopping';
     }
-    let dateCheckbox = document.createElement('p');
-    dateCheckbox.classList = 'dateTopping';
-    dateCheckbox.textContent = `${getDay(i)}`;
-    
+    else{
+        dateCheckbox.classList = 'dateTopping';
+    }
     checkboxArea.appendChild(dateCheckbox);
     }
 
@@ -349,9 +350,9 @@ function createButtonStack(habit, card, habitForm, title){
 
 function createAddHabbitForm(){
     const fields = [
-        { tag: 'input', attributes: { type: 'text', name: 'habit', placeholder: 'Habit Name', required: 'required' } },
-        { tag: 'input', attributes: { type: 'text', name: 'frequency', placeholder: 'How Often Do You Want To Do This Per Week?', required: 'required' } },
-        { tag: 'button', attributes: { type: 'submit', value: 'Submit' } }
+        { tag: 'input', attributes: { type: 'text', name: 'habit', placeholder: 'Habit Name', required: 'required', id: 'habitNameInput' } },
+        { tag: 'input', attributes: { type: 'text', name: 'frequency', placeholder: 'How Often Do You Want To Do This Per Week?', required: 'required', id: 'timesPerWeekInput' } },
+        { tag: 'button', attributes: { type: 'submit', value: 'Submit', id: 'submitBtnHabits' } }
     ]
     const form = document.createElement('form');
     fields.forEach(f => {
@@ -387,7 +388,7 @@ function createEditHabbitForm(){
     const fields = [
         { tag: 'input', attributes: { type: 'text', name: 'habit', placeholder: 'Habit name', required: 'required' } },
         { tag: 'input', attributes: { type: 'text', name: 'frequency', placeholder: 'Frequency', required: 'required' } },
-        { tag: 'button', attributes: { type: 'submit', value: 'Submit' } }
+        { tag: 'button', attributes: { type: 'submit', value: 'Submit', id: 'submitEdit' } }
     ]
     const form = document.createElement('form');
     fields.forEach(f => {
@@ -455,6 +456,7 @@ function showHabitForm(form){
 
 function showEditHabitForm(form, title){
     console.log("clicked")
+    form.id = 'editFormHabit';
     if(form.style.display == "none"){
         form.style.display = "block"
         let splitTitle = title.textContent.split(/-|:/)
