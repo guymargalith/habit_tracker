@@ -474,7 +474,7 @@ function render404() {
     document.body.background = changeBackgroundImage()
     const error = document.createElement('h2');
     error.textContent = "Oops, we can't find that page sorry!";
-    main.appendChild(error);
+    mainSection.appendChild(error);
 }
 
 module.exports = {renderHomepage, renderLoginForm, renderRegisterForm, renderUserHabitsPage, render404}
