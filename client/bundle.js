@@ -1,3 +1,82 @@
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+const {renderHomepage, renderLoginForm, renderRegisterForm, renderUserHabitsPage, buildCards, checkLogin, checkPasswords } = require('./content.js')
+async function requestLogin(e){
+    e.preventDefault();
+    try {
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+        }
+        console.log(options)
+        const r = await fetch(`http://localhost:3000/auth/login`, options)
+        const data = await r.json()
+        if (!data.success) { throw new Error('Login not authorised'); }
+        login(data.token);
+    } catch (err) {
+        if(!document.querySelector(`[value="error"]`)){
+            const errorMessage = document.createElement("div");
+            errorMessage.setAttribute('value', 'error')
+            errorMessage.textContent = "Your information does not match any on records";
+            errorMessage.style.color = "white";
+            mainSection.appendChild(errorMessage);
+        }
+    }
+}
+
+async function requestRegistration(e) {
+    e.preventDefault();
+    try {
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+        }
+        console.log(options)
+        const r = await fetch(`http://localhost:3000/auth/register`, options)
+        const data = await r.json()
+        if (data.err){ throw Error(data.err) }
+        requestLogin(e);
+    } catch (err) {
+        if(err.toString().includes('duplicate key value')){
+            if(!document.querySelector(`[value="error"]`)){
+                const errorMessage = document.createElement("div");
+                errorMessage.setAttribute('value', 'error')
+                errorMessage.textContent = 'This username is already registered';
+                errorMessage.style.color = "white";
+                mainSection.appendChild(errorMessage);
+            }
+
+        } else if(err.toString().includes('server')){
+            if(!document.querySelector(`[value="error"]`)){
+                const errorType = document.createElement('div');
+                errorType.setAttribute('value', 'error')
+                errorType.textContent = 'Experiencing an issue with the server';
+                errorType.style.color = "white";
+                mainSection.appendChild(errorType);
+            }
+        }
+        
+    }
+}
+
+function login(token){
+    const user = jwt_decode(token);
+    localStorage.setItem("token", token);
+    localStorage.setItem("username", user.username);
+    localStorage.setItem("id", user.id);
+    window.location.hash = '#user-habits';
+}
+
+function logout(){
+    localStorage.clear();
+    window.location.hash = '#';
+}
+
+
+module.exports = { requestLogin, requestRegistration, logout};
+
+},{"./content.js":2}],2:[function(require,module,exports){
 const {getHabits, getHabitsByUserId,getUsers,getStreak,getWeeklyLogs,createLog,deleteLog, createNewHabit, deleteHabit, editHabit} = require('./requests')
 const {requestLogin, requestRegistration, logout} = require('./auth')
 const mainSection = document.querySelector("#main-section");
@@ -193,13 +272,13 @@ async function buildCards(habit){
     }
     checkbox.addEventListener('change', logManage)
     checkboxArea.appendChild(checkbox);
-    let dateCheckbox = document.createElement('p');
-    dateCheckbox.textContent = `${getDay(i)}`;
+    
     if(i === 7){
         checkbox.classList = 'big';
-        dateCheckbox.className = 'big'
     }
+    let dateCheckbox = document.createElement('p');
     dateCheckbox.classList = 'dateTopping';
+    dateCheckbox.textContent = `${getDay(i)}`;
     
     checkboxArea.appendChild(dateCheckbox);
     }
@@ -477,3 +556,156 @@ function render404() {
 }
 
 module.exports = {renderHomepage, renderLoginForm, renderRegisterForm, renderUserHabitsPage, render404}
+},{"./auth":1,"./requests":4}],3:[function(require,module,exports){
+const {renderHomepage, renderLoginForm, renderRegisterForm, renderUserHabitsPage, render404} = require('./content')
+
+const mainSection = document.querySelector("#main-section");
+
+
+window.addEventListener('hashchange', updateMain)
+window.addEventListener('load', updateMain)
+
+function updateMain(){
+    const path = window.location.hash
+    mainSection.innerHTML ='';
+    if(localStorage.getItem('token')){
+        renderUserHabitsPage();
+    } else {
+        switch (path){
+        case '':
+            renderHomepage(); break;
+        case '#':
+            renderHomepage(); break;
+        case '#login':
+            renderLoginForm(); break;
+        case '#register':
+            renderRegisterForm(); break;
+        case '#user-habits':
+            window.location.hash = ''; break;
+        default: 
+            render404(); break;
+    }
+}
+}
+
+},{"./content":2}],4:[function(require,module,exports){
+
+async function getHabits(){
+    const options = {
+        headers: new Headers({'Authorization': localStorage.getItem('token')}),
+    }
+    const result = await fetch("http://localhost:3000/habits", options)
+    const data = result.json();
+    console.log(data)
+}
+
+
+async function getUsers(){
+    const options = {
+        headers: new Headers({'Authorization': localStorage.getItem('token'),}),
+    }
+    const result = await fetch("http://localhost:3000/users", options)
+    const data = result.json();
+    console.log(data)
+}
+
+
+async function getHabitsByUserId(id){
+    const options = {
+        headers: new Headers({'Authorization': localStorage.getItem('token')}),
+    }
+    const result = await fetch(`http://localhost:3000/habits/specific/${id}`, options)
+    const data = await result.json();
+    // const habits = data.map(d =>d.name)
+    return data
+}
+
+
+async function getStreak(id){
+    const options = {
+        headers: new Headers({'Authorization': localStorage.getItem('token')}),
+    }
+    const result = await fetch(`http://localhost:3000/habits/${id}/streak`, options)
+    const data = await result.json();
+    return data.streak; 
+
+}
+
+async function getWeeklyLogs(id){
+    const options = {
+        headers: new Headers({'Authorization': localStorage.getItem('token')}),
+    }
+    const result = await fetch(`http://localhost:3000/habits/${id}/weekly`, options)
+    const data = await result.json();
+    console.log(data)
+    return data.logs; 
+}
+
+async function createLog(habitId, date){
+    const options = {
+        method: 'POST',
+        headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
+        body: JSON.stringify({habitId: habitId, date: date})
+    }
+    const result = await fetch(`http://localhost:3000/logs`, options)
+    const data = await result.json()
+    return data
+}
+
+async function deleteLog(logId){
+    const options = {
+        method: 'DELETE',
+        headers: new Headers({'Authorization': localStorage.getItem('token')}),
+    }
+    await fetch(`http://localhost:3000/logs/${logId}`, options)
+}
+
+
+async function createNewHabit(habit, frequency){
+    const options = {
+        method: 'POST',
+        headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
+        body: JSON.stringify({name: habit, frequency: frequency, userId: localStorage.getItem('id')})
+    }
+    const result = await fetch(`http://localhost:3000/habits`, options)
+    const data = await result.json()
+    return data
+}
+
+async function deleteHabit(habitId) {
+    const options = {
+        method: 'DELETE',
+        headers: new Headers({'Authorization': localStorage.getItem('token')}),
+    }
+    const result = await fetch(`http://localhost:3000/habits/${habitId}`, options)
+}
+
+async function editHabit(id, habit, frequency) {
+    const options = {
+        method: 'PATCH',
+        headers: new Headers({'Authorization': localStorage.getItem('token'), 'Content-Type': 'application/json'}),
+        body: JSON.stringify({name: habit, frequency: frequency, id: id})
+    }
+    const result = await fetch(`http://localhost:3000/habits`, options)
+    const data = await result.json()
+    console.log(data)
+    return data
+}
+
+
+module.exports = { 
+    getHabits,
+    getHabitsByUserId,
+    getUsers,
+    getStreak,
+    getWeeklyLogs,
+    createLog,
+    deleteLog,
+    createNewHabit,
+    deleteHabit,
+    editHabit
+}
+
+
+
+},{}]},{},[3]);
