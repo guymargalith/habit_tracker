@@ -57,7 +57,7 @@ function renderLoginForm(){
                 let field = document.createElement(f.tag);
                 Object.entries(f.attributes).forEach(([a, v]) => {
                     field.setAttribute(a, v);
-                    if(field.name === 'username' || field.name === 'password'){
+                    if(field.type === 'username' || field.type === 'password'){
                         field.classList = 'form-control col input-spacing';
                     }
                     else{
@@ -101,7 +101,7 @@ function renderRegisterForm(){
                 Object.entries(f.attributes).forEach(([a, v]) => {
                     field.setAttribute(a, v);
                     
-                    if(field.name === 'username' || field.name === 'password' || field.name === 'confirmPassword'){
+                    if(field.type === 'username' || field.type === 'password'){
                         field.classList = 'form-control col input-spacing';
                     }
                     else{
